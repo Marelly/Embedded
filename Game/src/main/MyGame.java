@@ -61,6 +61,7 @@ public class MyGame extends Game {
 		periodicLoop.setContent(game.getContent());
 		game.setPeriodicLoop(periodicLoop);
 		game.setMouseHandler(new MyMouseHandler());
+		game.setKeyboardListener(new MyKeyboardListener());
 		game.initGame();
 	}
 

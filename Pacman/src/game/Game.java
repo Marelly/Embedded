@@ -8,6 +8,7 @@ public abstract class Game {
 	protected static GameUI gameUI;
 	private static DBHandler gameDB;
 	private static MouseHandler mouseHandler;
+	private static KeyboardListener keyboardListener;
 	private static PeriodicScheduler scheduler;
 	
 	public Game() {
@@ -32,9 +33,15 @@ public abstract class Game {
 		mouseHandler = myMouseHandler;
 	}
 	
+	public void setKeyboardListener(KeyboardListener myKeyboardListener) {
+		keyboardListener = myKeyboardListener;
+	}
+	
 	public void initGame() {
 		initContent();
 		initUI();
+		if (keyboardListener != null)
+			gameUI.frame().addKeyListener(keyboardListener.keyListener);
 		scheduler.start();
 	}
 	
@@ -42,6 +49,7 @@ public abstract class Game {
 		gameUI = new GameUI("My Game", 1000, 1000);
 		initCanvas();
 		initDashboard();
+		gameUI.setFocusable(true);
 		gameUI.setVisible(true);
 	}
 	
@@ -78,6 +86,10 @@ public abstract class Game {
 	
 	public static MouseHandler MouseHandler() {
 		return mouseHandler;
+	}
+	
+	public static KeyboardListener keybListener() {
+		return keyboardListener;
 	}
 	
 	public static GameContent Content() {

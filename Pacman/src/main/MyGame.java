@@ -11,6 +11,7 @@ import pacman.Board;
 import pacman.DirectionButton;
 import pacman.Maze.Direction;
 
+
 public class MyGame extends Game {
 	
 	private MyContent content;
@@ -66,6 +67,7 @@ public class MyGame extends Game {
 		periodicLoop.setContent(game.getContent());
 		game.setPeriodicLoop(periodicLoop);
 		game.setMouseHandler(new MyMouseHandler());
+		game.setKeyboardListener(new MyKeyboardListener());
 		game.initGame();
 	}
 

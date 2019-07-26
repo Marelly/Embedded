@@ -40,12 +40,20 @@ public class GameUI {
 		return this.dashboard;
 	}
 	
+	public JFrame frame() {
+		return this.frame;
+	}
+	
 	public void setSize(int width, int height) {
 		frame.setSize(width,  height);
 	}
 	
 	public void setVisible(boolean visible) {
 		this.frame.setVisible(visible);
+	}
+	
+	public void setFocusable(boolean focusable) {
+		this.frame.setFocusable(focusable);
 	}
 	
 	public static void main(String[] args) {
