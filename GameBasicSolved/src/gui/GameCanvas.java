@@ -71,7 +71,8 @@ public class GameCanvas extends JPanel  {
 
 	public void addShape(Shape shape) {
 		shapes.put(shape.getId(), shape);
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 	
 	public Shape getShape(String id) {
@@ -90,6 +91,7 @@ public class GameCanvas extends JPanel  {
 		Image image = (Image) shape;
 		this.remove(image.getImg());
 		image.setImage(src, width, height);
+		this.add(image.getImg());
 		this.repaint();
 	} 
 			
@@ -114,7 +116,8 @@ public class GameCanvas extends JPanel  {
 		if (shape != null) {
 			shapes.remove(id);
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 
 	public void hideAll() {
@@ -122,21 +125,24 @@ public class GameCanvas extends JPanel  {
 			shape.setStatus(STATUS.HIDE);
 //			this.remove(entity.getImg());
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 
 	public void showAll() {
 		for (Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.SHOW);
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 
 	public void deleteAll() {
 		for (String id : shapes.keySet()) {
 			deleteShape(id);
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 
 	public void flipStatus(String id) {
@@ -150,7 +156,8 @@ public class GameCanvas extends JPanel  {
 //				this.remove(entity.getImg());
 			}
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 
 	public void show(String id) {
@@ -159,7 +166,8 @@ public class GameCanvas extends JPanel  {
 			shape.setStatus(STATUS.SHOW);
 //				this.add(entity.getImg());
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 	
 	public void hide(String id) {
@@ -168,7 +176,8 @@ public class GameCanvas extends JPanel  {
 			shape.setStatus(STATUS.HIDE);
 //				this.remove(entity.getImg());
 		}
-		this.updateUI();
+		//this.updateUI();
+		this.repaint();
 	}
 	
 	protected void addListeners() {
