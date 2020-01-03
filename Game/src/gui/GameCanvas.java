@@ -90,8 +90,10 @@ public class GameCanvas extends JPanel  {
 		Image image = (Image) shape;
 		this.remove(image.getImg());
 		image.setImage(src, width, height);
+		this.add(image.getImg());
 		this.repaint();
 	} 
+ 
 			
 	public void moveShape(String id, int dx, int dy) {
 		Shape shape = shapes.get(id);
