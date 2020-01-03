@@ -8,6 +8,7 @@ import game.PeriodicLoop;
 import gui.GameCanvas;
 import my_game.MyCharacter;
 import shapes.Circle;
+import shapes.Text;
 
 public class MyPeriodicLoop extends PeriodicLoop {
 
@@ -31,13 +32,13 @@ public class MyPeriodicLoop extends PeriodicLoop {
 	}
 	
 	private void redrawPokimon() {
-		if (flag) {
-			Game.UI().canvas().changeImage("pokimon", "resources/Poki2.jpg", 260, 190);
-		}
-		else {
-			Game.UI().canvas().changeImage("pokimon", "resources/Poki.jpg", 220, 200);
-		}
-		flag = !flag;
+//		if (flag) {
+//			Game.UI().canvas().changeImage("pokimon", "resources/Poki2.jpg", 260, 190);
+//		}
+//		else {
+//			Game.UI().canvas().changeImage("pokimon", "resources/Poki.jpg", 220, 200);
+//		}
+//		flag = !flag;
 		content.pokimon().move();
 		Game.UI().canvas().moveToLocation("pokimon", content.pokimon().getLocation().x, content.pokimon().getLocation().y);
 	}
@@ -62,9 +63,16 @@ public class MyPeriodicLoop extends PeriodicLoop {
 		//and then change the specific Circle properties.
 		
 		Circle circle = (Circle) canvas.getShape("Circle");
-		circle.setRadius(character.getRadius());
+		circle.setRadius(character.getRadius() + 2);
 		circle.setFillColor(character.getColor());
 		circle.setIsFilled(character.getIsFilled());
+		
+		Text text = (Text) canvas.getShape("text");
+		if (text == null)
+			return;
+		
+		text.setFontSize(text.getFontSize()+2);
+		
 
 	}
 

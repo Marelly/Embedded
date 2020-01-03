@@ -11,6 +11,8 @@ import my_game.AddButton;
 import my_game.ChangeButton;
 import my_game.Pokimon;
 import shapes.Image;
+import shapes.Text;
+import shapes.TextLabel;
 
 public class MyGame extends Game {
 	
@@ -23,9 +25,12 @@ public class MyGame extends Game {
 		canvas.setBackground(Color.WHITE);
 		
 		Pokimon pokimon = content.pokimon();
+		TextLabel pokiText = new TextLabel("pokiText", "Pokimon", 50,50);
+		pokiText.setFontSize(40);
 		Image image = new Image(pokimon.getImageID(), pokimon.getImageName(), 220,200, 100, 100);
 		canvas.addShape(image);
-		
+		image.addTextLabel(pokiText);
+	
 	}
 	
 	@Override

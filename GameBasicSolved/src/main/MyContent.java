@@ -7,6 +7,7 @@ import game.GameContent;
 import gui.GameCanvas;
 import my_game.Pokimon;
 import shapes.Circle;
+import shapes.Text;
 import my_game.MyCharacter;
 import my_game.Point;
 
@@ -59,5 +60,6 @@ public class MyContent extends GameContent{
 		character.setRadius(100);
 		character.setColor(Color.BLUE);
 		character.setIsFilled(true);
+		Game.UI().canvas().addShape((new Text("text", "Hello", character.getLocation().x, character.getLocation().y)));
 	}
 }

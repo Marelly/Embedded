@@ -58,7 +58,7 @@ public class GameUI {
 	
 	public static void main(String[] args) {
 		//Create a new game UI, named "My Game" with a size of 1000 x 1000 pixels
-		GameUI gameUI = new GameUI("My Game", 1000, 1000);
+		GameUI gameUI = new GameUI("My Game", 1000, 800);
 		
 		//Add two pokimon entities to the game's UI canvas
 		gameUI.canvas().addShape(new Image("e1", "resources/Poki.jpg", 220, 220, 10, 10));

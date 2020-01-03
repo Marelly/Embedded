@@ -1,5 +1,6 @@
 package shapes;
 
+import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,15 +14,18 @@ import javax.swing.JLabel;
 public class Image extends Shape {
 	
 	private JLabel img;	
+	private TextLabel textLabel;
 	private int width;
 	private int height;
 	private int posX;
 	private int posY;
+	private String src;
 	public Image(String id, String src, int width, int height, int posX, int posY) {
 		super(id);
 		setImage(src, width, height);
 		this.posX = posX;
 		this.posY = posY;
+		this.src = src;
 	}
 	public int getWidth() {
 		return width;
@@ -54,22 +58,38 @@ public class Image extends Shape {
 	public void setImage(String src, int width, int height)
 	{
 		JLabel label;
-		try {
-			BufferedImage myPicture = ImageIO.read(new File(src));
-			label = new JLabel(new ImageIcon(myPicture));
-		} catch (IOException e) {
-			// The image cannot be loaded
-			label = new JLabel();
-		}
+		label = new JLabel(new ImageIcon(src));
+		label.setLayout(new BorderLayout());
 		this.img = label;
 		this.width = width;
 		this.height = height;		
+		// If there is an associated text, re-add it.
+		if (textLabel != null) {
+			addTextLabel(textLabel);
+		}
 	} 
 
+	public void addTextLabel(TextLabel textLabel) {
+		this.textLabel = textLabel;
+		img.add(textLabel.getLabel());
+		draw(null);
+	}
+	
+	public void removeTextLabel() {
+		//minimize the old text label
+		textLabel.getLabel().setBounds(0, 0, 0, 0);
+		img.remove(textLabel.getLabel());
+		this.textLabel = null;
+		draw(null);
+	}
 
+	
 	@Override
 	public void draw(Graphics2D g) {
 		getImg().setBounds(getPosX(), getPosY(), getWidth(), getHeight());
+		if (textLabel != null) {
+			textLabel.getLabel().setBounds(textLabel.getPosX(), textLabel.getPosY(), textLabel.getWidth(), textLabel.getHeight());
+		}
 	}
 	
 	@Override
