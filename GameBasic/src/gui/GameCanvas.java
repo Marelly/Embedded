@@ -18,6 +18,7 @@ import shapes.Line;
 import shapes.Rectangle;
 import shapes.Shape;
 import shapes.Text;
+import shapes.TextLabel;
 import shapes.Shape.STATUS;
 
 /**
@@ -71,7 +72,7 @@ public class GameCanvas extends JPanel  {
 
 	public void addShape(Shape shape) {
 		shapes.put(shape.getId(), shape);
-		this.updateUI();
+		this.repaint();
 	}
 	
 	public Shape getShape(String id) {
@@ -113,31 +114,31 @@ public class GameCanvas extends JPanel  {
 	public void deleteShape(String id) {
 		Shape shape = shapes.get(id);
 		if (shape != null) {
+			hide(id);
 			shapes.remove(id);
 		}
-		this.updateUI();
+		this.repaint();
 	}
 
 	public void hideAll() {
 		for (Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.HIDE);
-//			this.remove(entity.getImg());
 		}
-		this.updateUI();
+		this.repaint();
 	}
 
 	public void showAll() {
 		for (Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.SHOW);
 		}
-		this.updateUI();
+		this.repaint();
 	}
 
 	public void deleteAll() {
 		for (String id : shapes.keySet()) {
 			deleteShape(id);
 		}
-		this.updateUI();
+		this.repaint();
 	}
 
 	public void flipStatus(String id) {
@@ -145,31 +146,27 @@ public class GameCanvas extends JPanel  {
 		if (shape != null) {
 			if (shape.getStatus() == STATUS.HIDE) {
 				shape.setStatus(STATUS.SHOW);
-//				this.add(entity.getImg());
 			} else if (shape.getStatus() == STATUS.SHOW) {
 				shape.setStatus(STATUS.HIDE);
-//				this.remove(entity.getImg());
 			}
 		}
-		this.updateUI();
+		this.repaint();
 	}
 
 	public void show(String id) {
 		Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.setStatus(STATUS.SHOW);
-//				this.add(entity.getImg());
 		}
-		this.updateUI();
+		this.repaint();
 	}
 	
 	public void hide(String id) {
 		Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.setStatus(STATUS.HIDE);
-//				this.remove(entity.getImg());
 		}
-		this.updateUI();
+		this.repaint();
 	}
 	
 	protected void addListeners() {
@@ -237,14 +234,25 @@ public class GameCanvas extends JPanel  {
 					Image image = (Image) shape;
 					this.add(image.getImg());
 				}
+				if (shape instanceof TextLabel) {
+					TextLabel lbl = (TextLabel) shape;
+					this.add(lbl.getLabel());
+				}
+
 			}
-			if (shape.getStatus() == STATUS.HIDE && shape instanceof Image) {
-				Image image = (Image) shape;
-				this.remove(image.getImg());
+			if (shape.getStatus() == STATUS.HIDE) {
+				if (shape instanceof Image) {
+					Image image = (Image) shape;
+					this.remove(image.getImg());
+				}
+				if (shape instanceof TextLabel) {
+					TextLabel lbl = (TextLabel) shape;
+					this.remove(lbl.getLabel());
+				}
+
 			}
 		}
-
-	  }
+	}
 
 
 	public static void main(String[] args) {
@@ -258,28 +266,44 @@ public class GameCanvas extends JPanel  {
 		GameCanvas screen = new GameCanvas();
 		
 		//Add a pokemon to the canvas
-		screen.addShape(new Image("e1", "resources/Poki.jpg", 220, 220, 10, 10));
+		Image p1 = new Image("e1", "resources/Poki.jpg", 220, 220, 10, 10);
+		screen.addShape(p1);
 		Circle c1 = new Circle("c1", 100,100,100);
 		c1.setIsFilled(true);
 		c1.setFillColor(Color.BLUE);
 		screen.addShape(c1);
 		screen.addShape(new Rectangle("r1", 600, 600, 200, 150));
 		screen.addShape(new Line("l1", 20,20,120,120));
-		Text t1 = new Text("t1", "Hello World", 600, 400);
+		TextLabel t1 = new TextLabel("t1", "Hello World", 600, 400);
 		t1.setColor(Color.GREEN);
 		t1.setFontName("Helvetica");
 		t1.setFontSize(30);
 		screen.addShape(t1);
+
+//		Text t1 = new Text("t1", "Hello World", 600, 400);
+//		t1.setColor(Color.GREEN);
+//		t1.setFontName("Helvetica");
+//		t1.setFontSize(30);
+//		screen.addShape(t1);
+
 		
-		//Add the canvas to the frame ans show it
+		//Add the canvas to the frame and show it
 		frame.getContentPane().add(screen);
 		frame.setVisible(true);
+
+		Sleeper.sleep(200);
+		
+		TextLabel tp = new TextLabel("tp", "Pokimon", 50, 50);
+		tp.setColor(Color.RED);
+		tp.setFontName("Helvetica");
+		tp.setFontSize(30);
+		p1.addTextLabel(tp);
 		
 		//Move the pokemon 10 times
 		for (int i = 0; i< 10; i++) {
 			screen.moveShape("e1", 10, 5);
 			screen.moveShape("t1", 20, 20);
-			Sleeper.sleep(200);
+			Sleeper.sleep(400);
 		}
 		//Flicker pokemon
 		for (int i = 0; i< 4; i++) {
@@ -306,9 +330,12 @@ public class GameCanvas extends JPanel  {
 		for (int i = 0; i< 5; i++) {
 			screen.moveShape("c1", 50, 50);
 			screen.moveShape("l1", 50, 50);
-			t1.setText("Hello: "+i);
+			//t1.setText("Hello: "+i);
 			Sleeper.sleep(200);
 		}
+		
+		((Image) screen.getShape("e1")).removeTextLabel();
+		Sleeper.sleep(1000);
 		
 		screen.hide("c1");
 		Sleeper.sleep(1000);
@@ -317,9 +344,6 @@ public class GameCanvas extends JPanel  {
 		screen.hideAll();
 		Sleeper.sleep(1000);
 		screen.showAll();
-
-
-
 	}
 
 }
