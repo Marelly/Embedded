@@ -60,7 +60,6 @@ public class MyGame extends Game {
 	
 	public static void main(String[] args) {
 		MyGame game = new MyGame();
-		game.setExcelDB(ExcelDB.getInstance());
 		game.setGameContent(new MyContent());
 		MyPeriodicLoop periodicLoop = new MyPeriodicLoop();
 		periodicLoop.setContent(game.getContent());

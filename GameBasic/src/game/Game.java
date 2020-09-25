@@ -13,6 +13,7 @@ public abstract class Game {
 	
 	public Game() {
 		scheduler = new PeriodicScheduler();
+		excelDB = ExcelDB.getInstance();
 	}
 
 	/*
@@ -31,11 +32,7 @@ public abstract class Game {
 	public void setMouseHandler(MouseHandler myMouseHandler) {
 		mouseHandler = myMouseHandler;
 	}
-	
-	public void setExcelDB(ExcelDB myExcelDB) {
-		excelDB = myExcelDB;
-	}
-	
+		
 	public void setKeyboardListener(KeyboardListener myKeyboardListener) {
 		keyboardListener = myKeyboardListener;
 	}
