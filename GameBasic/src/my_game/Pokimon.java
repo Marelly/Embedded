@@ -1,5 +1,10 @@
 package my_game;
 
+import DB.ExcelDB;
+import DB.ExcelTable;
+import game.Game;
+import game.PeriodicLoop;
+
 public class Pokimon {
 	
 	public enum Direction{
@@ -21,6 +26,7 @@ public class Pokimon {
 		}
 	}
 
+	private ExcelTable pokimonTable; 
 	
 	private Point location;
 	private Direction directionPolicy = Direction.RIGHT;
@@ -28,6 +34,12 @@ public class Pokimon {
 	
 	private final String imageName = "resources/Poki.jpg";
 	private final String imageID = "pokimon";
+	
+	public Pokimon() {
+		
+		pokimonTable = Game.excelDB().createTableFromExcel("pokimonMoves");
+		pokimonTable.deleteAllRows();
+	}	
 	
 	public Point getLocation() {
 		return this.location;
@@ -67,6 +79,15 @@ public class Pokimon {
 			direction = directionPolicy;
 			location.x = desired.x;
 			location.y = desired.y;
+			try {
+				pokimonTable.insertRow(new String[] {PeriodicLoop.elapsedTime() + "", location.x + "", location.y +"", direction.toString()});
+				//Game.excelDB().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Error inserting new line to pokimon table");			
+			}
+
+
 	}
 	
 }

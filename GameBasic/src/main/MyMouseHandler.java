@@ -31,5 +31,29 @@ public class MyMouseHandler extends MouseHandler {
 		Game.UI().canvas().changeImage("pokimon", "resources/Poki.jpg", 220, 200);
 	}
 
+	@Override
+    public void mouseMovedOverShape(Shape shape) {
+		super.mouseMovedOverShape(shape);
+		//TODO: Enter your specific code here
+		Game.UI().canvas().changeImage("pokimon", "resources/Poki2.jpg", 260, 195);
+    }
+	
+	@Override
+    public void mouseDraggedOverShape(Shape shape) {
+		super.mouseDraggedOverShape(shape);
+		//TODO: Enter your specific code here
+		Game.UI().canvas().changeImage("pokimon", "resources/Poki.jpg", 220, 200);		
+	}
+	
+	@Override 
+	public void mouseMovedOverScreen(int x, int y) {
+		//super.mouseMovedOverScreen(x, y);
+		Game.UI().canvas().changeImage("pokimon", "resources/Poki.jpg", 220, 200);
+	}
+	
+	@Override 
+	public void mouseDraggedOverScreen(int x, int y) {
+		//super.mouseDraggedOverScreen(x, y);
+	}
 
 }

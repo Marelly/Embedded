@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,9 +18,8 @@ import shapes.Image;
 import shapes.Line;
 import shapes.Rectangle;
 import shapes.Shape;
-import shapes.Text;
-import shapes.TextLabel;
 import shapes.Shape.STATUS;
+import shapes.TextLabel;
 
 /**
  * A 2D screen that displays graphical shapes and enables to set their location at runtime, causing an animation effect.
@@ -189,7 +189,7 @@ public class GameCanvas extends JPanel  {
 
 			@Override
 			public void mouseClicked(MouseEvent event) {
-				Shape shape = ClickedShape(event.getX(), event.getY());
+				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					if (event.getButton() == 1) {// click
 						Game.MouseHandler().ShapeClicked(shape);
@@ -209,9 +209,39 @@ public class GameCanvas extends JPanel  {
 				}
 			}
 		});
+		
+		this.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
+				if (shape != null) {
+					System.out.println("mouse moved over shape " + shape.getId());
+					Game.MouseHandler().mouseMovedOverShape(shape);
+				}
+				else {
+					Game.MouseHandler().mouseMovedOverScreen(event.getX(), event.getY());
+				}
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
+				if (shape != null) {
+					System.out.println("mouse Dragged over shape " + shape.getId());
+					Game.MouseHandler().mouseDraggedOverShape(shape);
+				}
+				else {
+					Game.MouseHandler().mouseDraggedOverScreen(event.getX(), event.getY());
+				}
+
+			}
+		});
+		
+		
 	}
 
-	private Shape ClickedShape(int x, int y) {
+	private Shape getShapeByXY(int x, int y) {
 		for (Shape shape : shapes.values()) {
 			if (shape.getStatus() == STATUS.SHOW) {
 				if (shape.isInArea(x, y)) {

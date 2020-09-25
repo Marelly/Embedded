@@ -1,5 +1,6 @@
 package game;
 
+import DB.ExcelDB;
 import gui.GameUI;
 
 public abstract class Game {
@@ -8,6 +9,7 @@ public abstract class Game {
 	private static MouseHandler mouseHandler;
 	private static KeyboardListener keyboardListener;
 	private static PeriodicScheduler scheduler;
+	private static ExcelDB excelDB;
 	
 	public Game() {
 		scheduler = new PeriodicScheduler();
@@ -28,6 +30,10 @@ public abstract class Game {
 	
 	public void setMouseHandler(MouseHandler myMouseHandler) {
 		mouseHandler = myMouseHandler;
+	}
+	
+	public void setExcelDB(ExcelDB myExcelDB) {
+		excelDB = myExcelDB;
 	}
 	
 	public void setKeyboardListener(KeyboardListener myKeyboardListener) {
@@ -83,5 +89,8 @@ public abstract class Game {
 		return gameContent;
 	}
 
-
+	public static ExcelDB excelDB() {
+		return excelDB;
+	}
+	
 }
