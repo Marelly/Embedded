@@ -170,6 +170,12 @@ public class ExcelTable {
                 (c1, c2) -> (Integer.valueOf(c1.getValue()[index])).compareTo( Integer.valueOf(c2.getValue()[index]));
     }
 
+    private <K, V extends Comparable<? super String[]>> Comparator<Map.Entry<String, String[]>> compareIntByKey() {
+        return (Comparator<Map.Entry<String, String[]>> & Serializable)
+                (c1, c2) -> (Integer.valueOf(c1.getKey())).compareTo( Integer.valueOf(c2.getKey()));
+    }
+
+
     // checks if a string is a number
     private boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
@@ -190,7 +196,12 @@ public class ExcelTable {
 
         // Sort the list
         if (index == 0)
-            list.sort(compareByKey());
+            if (isNumeric(list.get(0).getKey())) {
+                list.sort(compareIntByKey());
+            }
+            else {
+                list.sort(compareByKey());
+            }
         else
             if (isNumeric(list.get(0).getValue()[index-1])) {
             list.sort(compareIntByXValue(index-1));

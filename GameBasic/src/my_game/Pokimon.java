@@ -32,8 +32,10 @@ public class Pokimon {
 	private Direction directionPolicy = Direction.RIGHT;
 	private Direction direction = Direction.RIGHT;
 	
-	private final String imageName = "resources/Poki.jpg";
+	private final String[] images = {"resources/Poki.jpg", "resources/Poki2.jpg"};
+	private int imageIndex = 0;
 	private final String imageID = "pokimon";
+	private boolean isMoving = true;
 	
 	public Pokimon() {
 		
@@ -62,20 +64,41 @@ public class Pokimon {
 	}
 	
 	public String getImageName() {
-		return this.imageName;
+		return images[imageIndex];
 	}
 	
 	public String getImageID() {
 		return this.imageID;
 	}
 	
-	
+	public void switchImage() {
+		setImage(1 - imageIndex);
+	}
 
+	public void setImage(int index) {
+		this.imageIndex = index;
+		if (imageIndex == 0) {
+			Game.UI().canvas().changeImage(imageID, getImageName(), 220, 200);
+		}
+		else {
+			Game.UI().canvas().changeImage(imageID, getImageName(), 260, 195);
+		}
+	}
+
+	public void stopMoving() {
+		isMoving = false;
+	}
+
+	public void resumeMoving() {
+		isMoving = true;
+	}
+	
 	public void move() {
 		
-		// Move according to policy
-		Point desired = new Point(location.x + directionPolicy.xVec(), location.y + directionPolicy.yVec());
-		// if move is possible, i.e., maze does not block
+		if (isMoving) {
+			// Move according to policy
+			Point desired = new Point(location.x + directionPolicy.xVec(), location.y + directionPolicy.yVec());
+			// if move is possible, i.e., maze does not block
 			direction = directionPolicy;
 			location.x = desired.x;
 			location.y = desired.y;
@@ -86,8 +109,7 @@ public class Pokimon {
 				e.printStackTrace();
 				System.out.println("Error inserting new line to pokimon table");			
 			}
-
-
+		}
 	}
 	
 }
