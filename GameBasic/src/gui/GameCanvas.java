@@ -115,6 +115,10 @@ public class GameCanvas extends JPanel  {
 		Shape shape = shapes.get(id);
 		if (shape != null) {
 			hide(id);
+			if (shape instanceof Image) {
+				Image image = (Image) shape;
+				this.remove(image.getImg());
+			}	
 			shapes.remove(id);
 		}
 		this.repaint();
@@ -135,9 +139,18 @@ public class GameCanvas extends JPanel  {
 	}
 
 	public void deleteAll() {
+		Shape shape;
 		for (String id : shapes.keySet()) {
-			deleteShape(id);
+			shape = shapes.get(id);
+			if (shape != null) {
+				hide(id);
+			}
+			if (shape instanceof Image) {
+				Image image = (Image) shape;
+				this.remove(image.getImg());
+			}	
 		}
+		shapes.clear();
 		this.repaint();
 	}
 
@@ -256,8 +269,15 @@ public class GameCanvas extends JPanel  {
 	@Override
 	public void paintComponent(Graphics g) {
 		 super.paintComponent(g);
+
+		 // While iterating over a hashmap, we are not allowed to modify it.
+		 // Store shapes hashmap into an array so that there will be no concurrent actions
+		 // in the hashmap.
+		 Shape[] tempShapes = shapes.values().toArray(new Shape[0]);
+		 Shape shape;
 		 	 
-		for (Shape shape : shapes.values()) {
+		 for (int i = 0; i < tempShapes.length; i++) {
+			shape = tempShapes[i];
 			if (shape.getStatus() == STATUS.SHOW) {
 				shape.draw((Graphics2D) g);
 				if (shape instanceof Image) {
