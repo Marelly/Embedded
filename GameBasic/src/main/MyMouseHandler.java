@@ -11,20 +11,20 @@ public class MyMouseHandler extends MouseHandler {
 	boolean onShape = false;
 
 	@Override
-	public void ScreenClicked(int x, int y) {
-		super.ScreenClicked(x, y);
+	public void screenClicked(int x, int y) {
+		super.screenClicked(x, y);
 		//TODO: Enter your specific code here
 	}
 
 	@Override
-	public void ScreenRightClicked(int x, int y) {
-		super.ScreenRightClicked(x, y);
+	public void screenRightClicked(int x, int y) {
+		super.screenRightClicked(x, y);
 		//TODO: Enter your specific code here
 	}
 	
 	@Override
-	public void ShapeClicked(Shape shape) {
-		super.ShapeClicked(shape);
+	public void shapeClicked(Shape shape) {
+		super.shapeClicked(shape);
 		//TODO: Enter your specific code here
 		if (shape.getId() == content.pokimon().getImageID()) {
 			content.pokimon().stopMoving();;
@@ -32,8 +32,8 @@ public class MyMouseHandler extends MouseHandler {
 	}
 	
 	@Override
-	public void ShapeRightClicked(Shape shape) {
-		super.ShapeRightClicked(shape);
+	public void shapeRightClicked(Shape shape) {
+		super.shapeRightClicked(shape);
 		//TODO: Enter your specific code here
 		if (shape.getId() == content.pokimon().getImageID()) {
 			content.pokimon().resumeMoving();;
@@ -94,5 +94,26 @@ public class MyMouseHandler extends MouseHandler {
 		}
 		
 	}
+
+	@Override 
+	public void shapePressed(Shape shape) {
+		super.shapePressed(shape);
+	}    
+	
+	@Override 
+	public void shapeReleased(Shape shape) {
+		super.shapeReleased(shape);
+	}
+
+	@Override 
+	public void screenPressed(int x, int y) {
+		super.screenPressed(x,y);
+	}
+
+	@Override 
+	public void screenReleased(int x, int y) {
+		super.screenReleased(x,y);
+	}
+
 
 }

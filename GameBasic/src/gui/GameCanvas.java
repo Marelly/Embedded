@@ -185,19 +185,33 @@ public class GameCanvas extends JPanel  {
 	protected void addListeners() {
 		this.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent arg0) {
+			public void mouseReleased(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
+				if (shape != null) {
+					Game.MouseHandler().shapeReleased(shape);
+				}
+				else {
+					Game.MouseHandler().screenReleased(event.getX(), event.getY());
+				}
 			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {
+			public void mousePressed(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
+				if (shape != null) {
+					Game.MouseHandler().shapePressed(shape);
+				}
+				else {
+					Game.MouseHandler().screenPressed(event.getX(), event.getY());
+				}
 			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0) {
+			public void mouseExited(MouseEvent event) {
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(MouseEvent event) {
 			}
 
 			@Override
@@ -205,19 +219,19 @@ public class GameCanvas extends JPanel  {
 				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					if (event.getButton() == 1) {// click
-						Game.MouseHandler().ShapeClicked(shape);
+						Game.MouseHandler().shapeClicked(shape);
 					}
 					if (event.getButton() == 3) {// rightclick
-						Game.MouseHandler().ShapeRightClicked(shape);
+						Game.MouseHandler().shapeRightClicked(shape);
 					}
 					
 				}
 				else {
 					if (event.getButton() == 1) {// click
-						Game.MouseHandler().ScreenClicked(event.getX(), event.getY());
+						Game.MouseHandler().screenClicked(event.getX(), event.getY());
 					}					
 					if (event.getButton() == 3) {// rightclick
-						Game.MouseHandler().ScreenRightClicked(event.getX(), event.getY());
+						Game.MouseHandler().screenRightClicked(event.getX(), event.getY());
 					}
 				}
 			}
