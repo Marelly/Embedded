@@ -6,9 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.ldap.SortControl;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -56,6 +59,10 @@ public class GameCanvas extends JPanel  {
 	
 	private final Map<String, Shape> shapes;
 
+	private Shape[] sortedShapes;
+	
+	private boolean resort = true;
+
 	int borderWidth;
 	
 	int positionX;
@@ -70,92 +77,97 @@ public class GameCanvas extends JPanel  {
 		addListeners();
 	}
 
-	public void addShape(Shape shape) {
+	public void addShape(final Shape shape) {
+		resort = true;
 		shapes.put(shape.getId(), shape);
 		this.repaint();
 	}
 	
-	public Shape getShape(String id) {
+	public Shape getShape(final String id) {
 		return shapes.get(id);
 	}
 
-	public void changeImage(String id, String src, int width, int height)
+	public void changeImage(final String id, final String src, final int width, final int height)
 	{
-		Shape shape = shapes.get(id);
+		final Shape shape = shapes.get(id);
 		if(shape == null){
 			return;
 		}
 		if (!(shape instanceof Image)) {
 			return;
 		}
-		Image image = (Image) shape;
+		final Image image = (Image) shape;
 		this.remove(image.getImg());
 		image.setImage(src, width, height);
 		this.add(image.getImg());
 		this.repaint();
 	} 
 			
-	public void moveShape(String id, int dx, int dy) {
-		Shape shape = shapes.get(id);
+	public void moveShape(final String id, final int dx, final int dy) {
+		final Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.move(dx, dy);
 			this.repaint();
 		}
 	}
 
-	public void moveToLocation(String id, int cordX, int cordY) {
-		Shape shape = shapes.get(id);
+	public void moveToLocation(final String id, final int cordX, final int cordY) {
+		final Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.moveToLocation(cordX, cordY);;
 			this.repaint();
 		}
 	}
 	
-	public void deleteShape(String id) {
-		Shape shape = shapes.get(id);
+	public void deleteShape(final String id) {
+		final Shape shape = shapes.get(id);
 		if (shape != null) {
 			hide(id);
 			if (shape instanceof Image) {
-				Image image = (Image) shape;
+				final Image image = (Image) shape;
 				this.remove(image.getImg());
 			}	
 			shapes.remove(id);
 		}
+		resort = true;
 		this.repaint();
 	}
 
 	public void hideAll() {
-		for (Shape shape : shapes.values()) {
+		for (final Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.HIDE);
 		}
+		resort = true;
 		this.repaint();
 	}
 
 	public void showAll() {
-		for (Shape shape : shapes.values()) {
+		for (final Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.SHOW);
 		}
+		resort = true;
 		this.repaint();
 	}
 
 	public void deleteAll() {
 		Shape shape;
-		for (String id : shapes.keySet()) {
+		for (final String id : shapes.keySet()) {
 			shape = shapes.get(id);
 			if (shape != null) {
 				hide(id);
 			}
 			if (shape instanceof Image) {
-				Image image = (Image) shape;
+				final Image image = (Image) shape;
 				this.remove(image.getImg());
 			}	
 		}
 		shapes.clear();
+		resort = true;
 		this.repaint();
 	}
 
-	public void flipStatus(String id) {
-		Shape shape = shapes.get(id);
+	public void flipStatus(final String id) {
+		final Shape shape = shapes.get(id);
 		if (shape != null) {
 			if (shape.getStatus() == STATUS.HIDE) {
 				shape.setStatus(STATUS.SHOW);
@@ -163,30 +175,33 @@ public class GameCanvas extends JPanel  {
 				shape.setStatus(STATUS.HIDE);
 			}
 		}
+		resort = true;
 		this.repaint();
 	}
 
-	public void show(String id) {
-		Shape shape = shapes.get(id);
+	public void show(final String id) {
+		final Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.setStatus(STATUS.SHOW);
 		}
+		resort = true;
 		this.repaint();
 	}
 	
-	public void hide(String id) {
-		Shape shape = shapes.get(id);
+	public void hide(final String id) {
+		final Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.setStatus(STATUS.HIDE);
 		}
+		resort = true;
 		this.repaint();
 	}
 	
 	protected void addListeners() {
 		this.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent event) {
-				Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseReleased(final MouseEvent event) {
+				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					Game.MouseHandler().shapeReleased(shape);
 				}
@@ -196,8 +211,8 @@ public class GameCanvas extends JPanel  {
 			}
 
 			@Override
-			public void mousePressed(MouseEvent event) {
-				Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mousePressed(final MouseEvent event) {
+				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					Game.MouseHandler().shapePressed(shape);
 				}
@@ -207,16 +222,16 @@ public class GameCanvas extends JPanel  {
 			}
 
 			@Override
-			public void mouseExited(MouseEvent event) {
+			public void mouseExited(final MouseEvent event) {
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent event) {
+			public void mouseEntered(final MouseEvent event) {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent event) {
-				Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseClicked(final MouseEvent event) {
+				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					if (event.getButton() == 1) {// click
 						Game.MouseHandler().shapeClicked(shape);
@@ -240,8 +255,8 @@ public class GameCanvas extends JPanel  {
 		this.addMouseMotionListener(new MouseMotionListener() {
 			
 			@Override
-			public void mouseMoved(MouseEvent event) {
-				Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseMoved(final MouseEvent event) {
+				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					System.out.println("mouse moved over shape " + shape.getId());
 					Game.MouseHandler().mouseMovedOverShape(shape);
@@ -252,8 +267,8 @@ public class GameCanvas extends JPanel  {
 			}
 
 			@Override
-			public void mouseDragged(MouseEvent event) {
-				Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseDragged(final MouseEvent event) {
+				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					System.out.println("mouse Dragged over shape " + shape.getId());
 					Game.MouseHandler().mouseDraggedOverShape(shape);
@@ -268,28 +283,41 @@ public class GameCanvas extends JPanel  {
 		
 	}
 
-	private Shape getShapeByXY(int x, int y) {
-		for (Shape shape : shapes.values()) {
-			if (shape.getStatus() == STATUS.SHOW) {
-				if (shape.isInArea(x, y)) {
+	private Shape[] getImagesSortedByZOrder() {
+		if (resort) {
+			sortedShapes = shapes.values().toArray(new Shape[0]);
+			Arrays.sort(sortedShapes, (s1,s2) -> {return (s1.getzOrder() - s2.getzOrder());});
+		}
+		return sortedShapes;
+	}
+
+	private Shape getShapeByXY(final int x, final int y) {
+		Shape[] tempShapes = getImagesSortedByZOrder();
+		Shape shape;
+
+		// Run over the shapes in reverse order so that top shape is selected 
+		// before a bottom shape.
+		for (int i = tempShapes.length-1; i >=0 ; i--) {
+		   shape = tempShapes[i];
+		   if (shape.getStatus() == STATUS.SHOW) {
+			   if (shape.isInArea(x, y)) {
 					return shape;
 				}
 			}
 		}
 		return null;
 	}
-
 	
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(final Graphics g) {
 		 super.paintComponent(g);
 
 		 // While iterating over a hashmap, we are not allowed to modify it.
 		 // Store shapes hashmap into an array so that there will be no concurrent actions
 		 // in the hashmap.
-		 Shape[] tempShapes = shapes.values().toArray(new Shape[0]);
+		 Shape[] tempShapes = getImagesSortedByZOrder();
 		 Shape shape;
-		 	 
+
 		 for (int i = 0; i < tempShapes.length; i++) {
 			shape = tempShapes[i];
 			if (shape.getStatus() == STATUS.SHOW) {
@@ -319,26 +347,26 @@ public class GameCanvas extends JPanel  {
 	}
 
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		
 		//Create a frame window and set its name, size and behavior when clicking the X
-		JFrame frame = new JFrame("My Screen");
+		final JFrame frame = new JFrame("My Screen");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1000, 1000);
 		
 		//Create a canvas
-		GameCanvas screen = new GameCanvas();
+		final GameCanvas screen = new GameCanvas();
 		
 		//Add a pokemon to the canvas
-		Image p1 = new Image("e1", "resources/Poki.jpg", 220, 220, 10, 10);
+		final Image p1 = new Image("e1", "resources/Poki.jpg", 220, 220, 10, 10);
 		screen.addShape(p1);
-		Circle c1 = new Circle("c1", 100,100,100);
+		final Circle c1 = new Circle("c1", 100,100,100);
 		c1.setIsFilled(true);
 		c1.setFillColor(Color.BLUE);
 		screen.addShape(c1);
 		screen.addShape(new Rectangle("r1", 600, 600, 200, 150));
 		screen.addShape(new Line("l1", 20,20,120,120));
-		TextLabel t1 = new TextLabel("t1", "Hello World", 600, 400);
+		final TextLabel t1 = new TextLabel("t1", "Hello World", 600, 400);
 		t1.setColor(Color.GREEN);
 		t1.setFontName("Helvetica");
 		t1.setFontSize(30);
@@ -357,7 +385,7 @@ public class GameCanvas extends JPanel  {
 
 		Sleeper.sleep(200);
 		
-		TextLabel tp = new TextLabel("tp", "Pokimon", 50, 50);
+		final TextLabel tp = new TextLabel("tp", "Pokimon", 50, 50);
 		tp.setColor(Color.RED);
 		tp.setFontName("Helvetica");
 		tp.setFontSize(30);

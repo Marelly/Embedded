@@ -15,6 +15,7 @@ public abstract class Shape {
 	private STATUS status;
 	private Color color = Color.red;
 	private int weight = 1;
+	private int zOrder = 1;
 	
 	public Shape(String id) {
 		this.id = id;
@@ -46,6 +47,13 @@ public abstract class Shape {
 		this.weight = weight;
 	}
 	
+	public void setzOrder(int zOrder) {
+		this.zOrder = zOrder;
+	}
+
+	public int getzOrder() {
+		return zOrder;
+	}
 	/*
 	 * The following methods must be implemented by the classes (specific shapes) that
 	 * extend this class
