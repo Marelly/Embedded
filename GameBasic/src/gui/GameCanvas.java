@@ -287,6 +287,7 @@ public class GameCanvas extends JPanel  {
 		if (resort) {
 			sortedShapes = shapes.values().toArray(new Shape[0]);
 			Arrays.sort(sortedShapes, (s1,s2) -> {return (s1.getzOrder() - s2.getzOrder());});
+			resort = false;
 		}
 		return sortedShapes;
 	}
