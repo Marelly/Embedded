@@ -310,23 +310,25 @@ public class GameCanvas extends JPanel  {
 	}
 	
 	@Override
-	public void paintComponent(final Graphics g) {
+	public void paintComponent(Graphics g) {
 		 super.paintComponent(g);
 
-		 // While iterating over a hashmap, we are not allowed to modify it.
-		 // Store shapes hashmap into an array so that there will be no concurrent actions
-		 // in the hashmap.
+		 // Draw the shapes according to their ZOrder.
+		 // To have a geometric shape in front of another it should be drawn later.
+		 // To have an image in front of another it should be drawn earlier.
+		 // Thus, we traverse the array twice, in order for the shapes and then in reverse
+		 // order for the images.
 		 Shape[] tempShapes = getImagesSortedByZOrder();
 		 Shape shape;
-
+			  
+		 // Draw geometric shapes and texts in order
 		 for (int i = 0; i < tempShapes.length; i++) {
 			shape = tempShapes[i];
+			if (shape instanceof Image) {
+				continue; // Do not handle Images in this pass
+			}
 			if (shape.getStatus() == STATUS.SHOW) {
 				shape.draw((Graphics2D) g);
-				if (shape instanceof Image) {
-					Image image = (Image) shape;
-					this.add(image.getImg());
-				}
 				if (shape instanceof TextLabel) {
 					TextLabel lbl = (TextLabel) shape;
 					this.add(lbl.getLabel());
@@ -334,10 +336,6 @@ public class GameCanvas extends JPanel  {
 
 			}
 			if (shape.getStatus() == STATUS.HIDE) {
-				if (shape instanceof Image) {
-					Image image = (Image) shape;
-					this.remove(image.getImg());
-				}
 				if (shape instanceof TextLabel) {
 					TextLabel lbl = (TextLabel) shape;
 					this.remove(lbl.getLabel());
@@ -345,6 +343,25 @@ public class GameCanvas extends JPanel  {
 
 			}
 		}
+
+		// Draw images in reverse order
+		for (int i = tempShapes.length-1; i >=  0; i--) {
+			shape = tempShapes[i];
+			if (!(shape instanceof Image)) {
+				continue; // Do not handle Non-Image shapes in this pass
+			}
+			if (shape.getStatus() == STATUS.SHOW) {
+				shape.draw((Graphics2D) g);
+				Image image = (Image) shape;
+				this.add(image.getImg());
+
+			}
+			if (shape.getStatus() == STATUS.HIDE) {
+				Image image = (Image) shape;
+				this.remove(image.getImg());
+			}
+		}
+
 	}
 
 
