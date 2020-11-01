@@ -7,11 +7,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.ldap.SortControl;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 

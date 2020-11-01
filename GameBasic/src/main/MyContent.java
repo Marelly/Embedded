@@ -1,12 +1,11 @@
 package main;
 
-import java.awt.Color;
+
 
 import game.Game;
 import game.GameContent;
 import gui.GameCanvas;
 import my_game.Pokimon;
-import shapes.Circle;
 import my_game.MyCharacter;
 import my_game.Point;
 

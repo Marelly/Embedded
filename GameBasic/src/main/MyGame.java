@@ -2,14 +2,14 @@ package main;
 
 import java.awt.Color;
 
-import DB.ExcelDB;
+
 import game.Game;
 import game.GameContent;
 import gui.GameCanvas;
 import gui.GameDashboard;
-import my_game.Pokimon.Direction;
 import my_game.AddButton;
 import my_game.ChangeButton;
+import my_game.MusicButton;
 import my_game.Pokimon;
 import shapes.Image;
 import shapes.Rectangle;
@@ -55,6 +55,7 @@ public class MyGame extends Game {
 		//TODO
 		// Add the ChangeButton button to the dashboard
 		dashboard.addButton(new ChangeButton("changeButton", "Change", 400, 40));
+		dashboard.addButton(new MusicButton("musicButton", "Play", 600, 40));
 
 	}
 	

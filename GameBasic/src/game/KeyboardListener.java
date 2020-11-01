@@ -1,9 +1,6 @@
 
 package game;
 
-import game.Game;
-import game.GameContent;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

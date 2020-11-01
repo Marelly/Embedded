@@ -1,6 +1,5 @@
 package my_game;
 
-import DB.ExcelDB;
 import DB.ExcelTable;
 import game.Game;
 import game.PeriodicLoop;

@@ -4,7 +4,6 @@ import game.Game;
 import gui.GameButton;
 import gui.GameCanvas;
 import main.MyContent;
-import my_game.Pokimon.Direction;
 
 public class ChangeButton extends GameButton{
 	

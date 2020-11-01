@@ -4,8 +4,6 @@ import game.Game;
 import gui.GameButton;
 import gui.GameCanvas;
 import main.MyContent;
-import my_game.Pokimon.Direction;
-import shapes.Circle;
 
 public class AddButton extends GameButton{
 	

@@ -1,13 +1,11 @@
 package main;
 
 
-import java.awt.Color;
+
 
 import game.Game;
 import game.PeriodicLoop;
 import gui.GameCanvas;
-import my_game.MyCharacter;
-import shapes.Circle;
 
 public class MyPeriodicLoop extends PeriodicLoop {
 

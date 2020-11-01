@@ -4,7 +4,6 @@ import my_game.Pokimon;
 import java.awt.event.KeyEvent;
 
 import game.KeyboardListener;
-import main.MyContent;
 
 public class MyKeyboardListener extends KeyboardListener{
 

@@ -9,11 +9,13 @@ public abstract class Game {
 	private static MouseHandler mouseHandler;
 	private static KeyboardListener keyboardListener;
 	private static PeriodicScheduler scheduler;
+	private static AudioPlayer audioPlayer;
 	private static ExcelDB excelDB;
 	
 	public Game() {
 		scheduler = new PeriodicScheduler();
 		excelDB = ExcelDB.getInstance();
+		audioPlayer = new AudioPlayer();
 	}
 
 	/*
@@ -89,5 +91,10 @@ public abstract class Game {
 	public static ExcelDB excelDB() {
 		return excelDB;
 	}
+
+	public static AudioPlayer audioPlayer() {
+		return audioPlayer;
+	}
+
 	
 }

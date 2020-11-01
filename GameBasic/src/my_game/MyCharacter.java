@@ -1,6 +1,5 @@
 package my_game;
 
-import java.awt.Color;
 
 public class MyCharacter {
 	
