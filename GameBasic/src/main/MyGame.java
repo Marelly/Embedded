@@ -24,16 +24,6 @@ public class MyGame extends Game {
 		GameCanvas canvas = gameUI.canvas();
 		canvas.setBackground(Color.WHITE);
 		
-		Rectangle rect = new Rectangle("rect", 100, 100, 500, 500);
-		rect.setIsFilled(true);
-		rect.setzOrder(1);
-		canvas.addShape(rect);
-		Rectangle rect2 = new Rectangle("rect2", 150, 150, 300, 300);
-		rect2.setColor(Color.BLUE);
-		rect2.setIsFilled(true);
-		rect2.setzOrder(2);
-		canvas.addShape(rect);
-		canvas.addShape(rect2);
 
 		Pokimon pokimon = content.pokimon();
 		Image image = new Image(pokimon.getImageID(), pokimon.getImageName(), 220,200, 100, 100);
