@@ -2,27 +2,32 @@ package shapes;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
-
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 
 public class Image extends Shape {
 	
-	private JLabel img;	
+	private RotatedJLabel img;
+	private int rotation;	// In degrees
 	private TextLabel textLabel;
 	private int width;
 	private int height;
 	private int posX;
 	private int posY;
 	private String src;
+	private int boundingWidth;
+	private int boundingHeight;
+	
+	
 	public Image(String id, String src, int width, int height, int posX, int posY) {
 		super(id);
 		setImage(src, width, height);
 		this.posX = posX;
 		this.posY = posY;
 		this.src = src;
+		setRotation(0);
 	}
+	
 	public int getWidth() {
 		return width;
 	}
@@ -47,15 +52,16 @@ public class Image extends Shape {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
-	public JLabel getImg() {
+	public RotatedJLabel getImg() {
 		return img;
 	}
 	
 	public void setImage(String src, int width, int height)
 	{
-		JLabel label;
-		label = new JLabel(new ImageIcon(src));
+		RotatedJLabel label;
+		label = new RotatedJLabel(new ImageIcon(src));
 		label.setLayout(new BorderLayout());
+		label.setRotation(rotation);
 		this.img = label;
 		this.width = width;
 		this.height = height;		
@@ -64,6 +70,23 @@ public class Image extends Shape {
 			addTextLabel(textLabel);
 		}
 	} 
+	
+
+	public double getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
+		img.setRotation(rotation);
+		double rads = Math.toRadians(rotation); // convert rotation to radians for trigonometric functions
+		int newBoundingHeight = (int) (getWidth()*Math.abs(Math.sin(rads))+getHeight()*Math.abs(Math.cos(rads)));
+		int newBoundingWidth = (int) (getWidth()*Math.abs(Math.cos(rads))+getHeight()*Math.abs(Math.sin(rads)));
+		posX -= (newBoundingWidth-boundingWidth)/2;
+		posY -= (newBoundingHeight-boundingHeight)/2;
+		boundingWidth = newBoundingWidth;
+		boundingHeight = newBoundingHeight;
+	}
 
 	public void addTextLabel(TextLabel textLabel) {
 		this.textLabel = textLabel;
@@ -82,7 +105,7 @@ public class Image extends Shape {
 	
 	@Override
 	public void draw(Graphics2D g) {
-		getImg().setBounds(getPosX(), getPosY(), getWidth(), getHeight());
+		getImg().setBounds(getPosX(), getPosY(), boundingWidth, boundingHeight);
 		if (textLabel != null) {
 			textLabel.getLabel().setBounds(textLabel.getPosX(), textLabel.getPosY(), textLabel.getWidth(), textLabel.getHeight());
 		}
@@ -105,6 +128,7 @@ public class Image extends Shape {
 		this.posX = x;
 		this.posY = y;
 		draw(null);
-	}	
+	}
+	
 	
 }

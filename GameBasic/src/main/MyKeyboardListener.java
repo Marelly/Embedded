@@ -24,10 +24,12 @@ public class MyKeyboardListener extends KeyboardListener{
 			  myContent.pokimon().setDirectionPolicy(Pokimon.Direction.LEFT);
 			  break;
 		  case UP:
-			  myContent.pokimon().setDirectionPolicy(Pokimon.Direction.UP);
+			  //myContent.pokimon().setDirectionPolicy(Pokimon.Direction.UP);
+			  myContent.pokimon().setRotation(myContent.pokimon().getRotation() + 20);
 			  break;
 		  case DOWN:
-			  myContent.pokimon().setDirectionPolicy(Pokimon.Direction.DOWN);
+			  //myContent.pokimon().setDirectionPolicy(Pokimon.Direction.DOWN);
+			  myContent.pokimon().setRotation(myContent.pokimon().getRotation() - 20);
 			  break;
 		}
 	}

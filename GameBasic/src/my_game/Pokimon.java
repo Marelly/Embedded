@@ -3,6 +3,7 @@ package my_game;
 import DB.ExcelTable;
 import game.Game;
 import game.PeriodicLoop;
+import shapes.Image;
 
 public class Pokimon {
 	
@@ -35,6 +36,7 @@ public class Pokimon {
 	private int imageIndex = 0;
 	private final String imageID = "pokimon";
 	private boolean isMoving = true;
+	private int rotation = 0;	// In degrees
 	
 	public Pokimon() {
 		
@@ -70,6 +72,16 @@ public class Pokimon {
 		return this.imageID;
 	}
 	
+	public int getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
+		Image i = (Image) (Game.UI().canvas().getShape(imageID));
+		i.setRotation(rotation);
+	}
+
 	public void switchImage() {
 		setImage(1 - imageIndex);
 	}
