@@ -2,7 +2,6 @@ package main;
 
 import java.awt.Color;
 
-
 import game.Game;
 import game.GameContent;
 import gui.GameCanvas;
@@ -11,8 +10,8 @@ import my_game.AddButton;
 import my_game.ChangeButton;
 import my_game.MusicButton;
 import my_game.Pokimon;
+import shapes.Circle;
 import shapes.Image;
-import shapes.Rectangle;
 
 public class MyGame extends Game {
 	
@@ -29,7 +28,8 @@ public class MyGame extends Game {
 		Image image = new Image(pokimon.getImageID(), pokimon.getImageName(), 220,200, 100, 100);
 		image.setzOrder(3);
 		canvas.addShape(image);
-	
+		canvas.addShape(content.polygon().getVisualPolygon());
+		canvas.addShape(new Circle("circle", 300, 300, 50));
 	}
 	
 	@Override

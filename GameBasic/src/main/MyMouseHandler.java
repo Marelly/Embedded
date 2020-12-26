@@ -2,6 +2,7 @@ package main;
 
 import game.Game;
 import game.MouseHandler;
+import my_game.Point;
 import shapes.Shape;
 
 public class MyMouseHandler extends MouseHandler {
@@ -23,8 +24,8 @@ public class MyMouseHandler extends MouseHandler {
 	}
 	
 	@Override
-	public void shapeClicked(Shape shape) {
-		super.shapeClicked(shape);
+	public void shapeClicked(Shape shape, int x, int y) {
+		super.shapeClicked(shape, x, y);
 		//TODO: Enter your specific code here
 		if (shape.getId() == content.pokimon().getImageID()) {
 			content.pokimon().stopMoving();;
@@ -32,8 +33,8 @@ public class MyMouseHandler extends MouseHandler {
 	}
 	
 	@Override
-	public void shapeRightClicked(Shape shape) {
-		super.shapeRightClicked(shape);
+	public void shapeRightClicked(Shape shape, int x, int y) {
+		super.shapeRightClicked(shape, x, y);
 		//TODO: Enter your specific code here
 		if (shape.getId() == content.pokimon().getImageID()) {
 			content.pokimon().resumeMoving();;
@@ -41,8 +42,8 @@ public class MyMouseHandler extends MouseHandler {
 	}
 
 	@Override
-    public void mouseMovedOverShape(Shape shape) {
-		super.mouseMovedOverShape(shape);
+    public void mouseMovedOverShape(Shape shape, int x, int y) {
+		super.mouseMovedOverShape(shape, x, y);
 		//TODO: Enter your specific code here
 
 		//If we were already on shape do nothing
@@ -56,8 +57,8 @@ public class MyMouseHandler extends MouseHandler {
     }
 	
 	@Override
-    public void mouseDraggedOverShape(Shape shape) {
-		super.mouseDraggedOverShape(shape);
+    public void mouseDraggedOverShape(Shape shape, int x, int y) {
+		super.mouseDraggedOverShape(shape, x, y);
 		//TODO: Enter your specific code here
 
 		//If we were already on shape do nothing
@@ -67,6 +68,10 @@ public class MyMouseHandler extends MouseHandler {
 			}
 			// Mark that we are already on shape
 			onShape = true;
+			if (draggedShape.getId() == "pokimon") {
+				content.pokimon().setLocation(new Point(x,y));
+			}
+	
 		}
 	}
 	
@@ -84,7 +89,7 @@ public class MyMouseHandler extends MouseHandler {
 	
 	@Override 
 	public void mouseDraggedOverScreen(int x, int y) {
-		//super.mouseDraggedOverScreen(x, y);
+		super.mouseDraggedOverScreen(x, y);
 
 		// Act only if we just left the shape
 		if (onShape) {
@@ -92,17 +97,20 @@ public class MyMouseHandler extends MouseHandler {
 			// Mark that we left the shape
 			onShape = false;
 		}
+		if (draggedShape.getId() == "pokimon") {
+			content.pokimon().setLocation(new Point(x,y));
+		}
 		
 	}
 
 	@Override 
-	public void shapePressed(Shape shape) {
-		super.shapePressed(shape);
+	public void shapePressed(Shape shape, int x, int y) {
+		super.shapePressed(shape, x, y);
 	}    
 	
 	@Override 
-	public void shapeReleased(Shape shape) {
-		super.shapeReleased(shape);
+	public void shapeReleased(Shape shape, int x, int y) {
+		super.shapeReleased(shape, x, y);
 	}
 
 	@Override 

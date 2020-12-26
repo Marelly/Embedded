@@ -201,7 +201,7 @@ public class GameCanvas extends JPanel  {
 			public void mouseReleased(final MouseEvent event) {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					Game.MouseHandler().shapeReleased(shape);
+					Game.MouseHandler().shapeReleased(shape, event.getX(), event.getY());
 				}
 				else {
 					Game.MouseHandler().screenReleased(event.getX(), event.getY());
@@ -212,7 +212,7 @@ public class GameCanvas extends JPanel  {
 			public void mousePressed(final MouseEvent event) {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					Game.MouseHandler().shapePressed(shape);
+					Game.MouseHandler().shapePressed(shape, event.getX(), event.getY());
 				}
 				else {
 					Game.MouseHandler().screenPressed(event.getX(), event.getY());
@@ -232,10 +232,10 @@ public class GameCanvas extends JPanel  {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					if (event.getButton() == 1) {// click
-						Game.MouseHandler().shapeClicked(shape);
+						Game.MouseHandler().shapeClicked(shape, event.getX(), event.getY());
 					}
 					if (event.getButton() == 3) {// rightclick
-						Game.MouseHandler().shapeRightClicked(shape);
+						Game.MouseHandler().shapeRightClicked(shape, event.getX(), event.getY());
 					}
 					
 				}
@@ -257,7 +257,7 @@ public class GameCanvas extends JPanel  {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					System.out.println("mouse moved over shape " + shape.getId());
-					Game.MouseHandler().mouseMovedOverShape(shape);
+					Game.MouseHandler().mouseMovedOverShape(shape, event.getX(), event.getY());
 				}
 				else {
 					Game.MouseHandler().mouseMovedOverScreen(event.getX(), event.getY());
@@ -269,7 +269,7 @@ public class GameCanvas extends JPanel  {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					System.out.println("mouse Dragged over shape " + shape.getId());
-					Game.MouseHandler().mouseDraggedOverShape(shape);
+					Game.MouseHandler().mouseDraggedOverShape(shape, event.getX(), event.getY());
 				}
 				else {
 					Game.MouseHandler().mouseDraggedOverScreen(event.getX(), event.getY());

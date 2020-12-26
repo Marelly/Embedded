@@ -18,6 +18,7 @@ public class ChangeButton extends GameButton{
 		super.buttonAction();
 		
 		MyContent content = (MyContent) Game.Content();
+		content.polygon().getVisualPolygon().rotate(45);
 		//TODO
 		//Change your character properties by calling the appropriate method of
 		//MyContent

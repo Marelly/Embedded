@@ -2,15 +2,19 @@ package main;
 
 
 
+import java.awt.Color;
+
 import game.Game;
 import game.GameContent;
 import gui.GameCanvas;
 import my_game.Pokimon;
 import my_game.MyCharacter;
+import my_game.MyPolygon;
 import my_game.Point;
 
 public class MyContent extends GameContent{
 	private Pokimon pokimon;
+	private MyPolygon myPolygon;
 	
 	//TODO
 	//Declare your own character
@@ -19,11 +23,28 @@ public class MyContent extends GameContent{
 	@Override
 	public void initContent() {
 		pokimon = new Pokimon();
-		pokimon.setLocation(new Point(100,100));		
+		pokimon.setLocation(new Point(100,100));
+		Point[] points = {
+			new Point(100, 100),
+			new Point(130, 50),
+			new Point(170, 50),
+			new Point(200, 100),
+			new Point(220, 170),
+			new Point(170, 150),
+			new Point(130, 150)
+		};
+		myPolygon = new MyPolygon(points);
+		myPolygon.getVisualPolygon().setIsFilled(true);
+		myPolygon.getVisualPolygon().setFillColor(Color.GRAY);
+		myPolygon.getVisualPolygon().setWeight(3);
 	}	
 	
 	public Pokimon pokimon() {
 		return pokimon;
+	}
+
+	public MyPolygon polygon() {
+		return myPolygon;
 	}
 	
 	public void addCharacter() {
