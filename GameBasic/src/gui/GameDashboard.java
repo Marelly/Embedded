@@ -1,14 +1,13 @@
 package gui;
 
-
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import buttons.GameButton;
 import shapes.Shape.STATUS;
 /**
  * A 2D screen that displays graphical entities and enables to set their location at runtime, causing an animation effect.
@@ -72,7 +71,7 @@ public class GameDashboard extends JPanel  {
 	 * Add a specific button that is derived from GameButton and is created before.
 	 */
 	public void addButton(GameButton gameButton) {
-		buttons.put(gameButton.id, gameButton);
+		buttons.put(gameButton.getId(), gameButton);
 		this.add(gameButton.getJButton());
 		this.updateUI();
 	}

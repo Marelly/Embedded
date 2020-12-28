@@ -1,11 +1,12 @@
 package my_game;
 
 import DB.ExcelTable;
+import game.ShapeListener;
 import game.Game;
 import game.PeriodicLoop;
 import shapes.Image;
 
-public class Pokimon {
+public class Pokimon implements ShapeListener {
 	
 	public enum Direction{
 		RIGHT (10,0),
@@ -51,6 +52,12 @@ public class Pokimon {
 	public void setLocation(Point location) {
 		this.location = location;
 	}
+
+	public void moveLocation(int dx, int dy) {
+		this.location.x += dx;
+		this.location.y += dy;
+	}
+
 	
 	public void setDirectionPolicy(Direction direction) {
 		directionPolicy = direction;
@@ -121,6 +128,46 @@ public class Pokimon {
 				System.out.println("Error inserting new line to pokimon table");			
 			}
 		}
+	}
+
+	@Override
+	public void shapeMoved(String shapeID, int dx, int dy) {
+		moveLocation(dx, dy);
+	}
+
+	@Override
+	public void shapeStartDrag(String shapeID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void shapeEndDrag(String shapeID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void shapeClicked(String shapeID, int x, int y) {
+		stopMoving();
+
+	}
+
+	@Override
+	public void shapeRightClicked(String shapeID, int x, int y) {
+		resumeMoving();
+	}
+
+	@Override
+	public void mouseEnterShape(String shapeID, int x, int y) {
+		switchImage();
+
+	}
+
+	@Override
+	public void mouseExitShape(String shapeID, int x, int y) {
+		switchImage();
+
 	}
 	
 }

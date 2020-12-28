@@ -6,9 +6,12 @@ import game.Game;
 import game.GameContent;
 import gui.GameCanvas;
 import gui.GameDashboard;
-import my_game.AddButton;
-import my_game.ChangeButton;
-import my_game.MusicButton;
+import buttons.AddButton;
+import buttons.ChangeButton;
+import buttons.CircleDragButton;
+import buttons.EditPolygonButton;
+import buttons.MusicButton;
+import buttons.RotatePolygonButton;
 import my_game.Pokimon;
 import shapes.Circle;
 import shapes.Image;
@@ -26,10 +29,13 @@ public class MyGame extends Game {
 
 		Pokimon pokimon = content.pokimon();
 		Image image = new Image(pokimon.getImageID(), pokimon.getImageName(), 220,200, 100, 100);
+		image.setShapeListener(pokimon);
 		image.setzOrder(3);
 		canvas.addShape(image);
 		canvas.addShape(content.polygon().getVisualPolygon());
-		canvas.addShape(new Circle("circle", 300, 300, 50));
+		Circle c = new Circle("circle", 300, 300, 50);
+		c.setDraggable(false);
+		canvas.addShape(c);
 	}
 	
 	@Override
@@ -39,13 +45,21 @@ public class MyGame extends Game {
 		
 		dashboard.setBackground(Color.BLACK);
 		
+		// Add a the Polygon buttons
+		dashboard.addButton(new EditPolygonButton("editButton", "Edit", 60, 40));
+		dashboard.addButton(new RotatePolygonButton("rotateButton", "Rotate", 60, 100));
+
+		// Add a the Circle drag button
+		dashboard.addButton(new CircleDragButton("dragButton", "Drag", 280, 40));
+
+
 		// Add a the AddButton button
-		dashboard.addButton(new AddButton("addButton", "Add", 200, 40));
+		dashboard.addButton(new AddButton("addButton", "Add", 540, 40));
 		
 		//TODO
 		// Add the ChangeButton button to the dashboard
-		dashboard.addButton(new ChangeButton("changeButton", "Change", 400, 40));
-		dashboard.addButton(new MusicButton("musicButton", "Play", 600, 40));
+		dashboard.addButton(new ChangeButton("changeButton", "Change", 540, 100));
+		dashboard.addButton(new MusicButton("musicButton", "Play", 700, 40));
 
 	}
 	

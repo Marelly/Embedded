@@ -34,9 +34,6 @@ public class MyContent extends GameContent{
 			new Point(130, 150)
 		};
 		myPolygon = new MyPolygon(points);
-		myPolygon.getVisualPolygon().setIsFilled(true);
-		myPolygon.getVisualPolygon().setFillColor(Color.GRAY);
-		myPolygon.getVisualPolygon().setWeight(3);
 	}	
 	
 	public Pokimon pokimon() {

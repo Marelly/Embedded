@@ -1,6 +1,7 @@
 package game;
 
 import DB.ExcelDB;
+import buttons.EndButton;
 import gui.GameUI;
 
 public abstract class Game {

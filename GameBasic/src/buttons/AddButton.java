@@ -1,13 +1,12 @@
-package my_game;
+package buttons;
 
 import game.Game;
-import gui.GameButton;
 import gui.GameCanvas;
 import main.MyContent;
 
-public class ChangeButton extends GameButton{
+public class AddButton extends GameButton{
 	
-	public ChangeButton(String id, String name, int posX, int posY) {
+	public AddButton(String id, String name, int posX, int posY) {
 		super(id, name, 100, 40, posX, posY);
 	}
 
@@ -18,11 +17,9 @@ public class ChangeButton extends GameButton{
 		super.buttonAction();
 		
 		MyContent content = (MyContent) Game.Content();
-		content.polygon().getVisualPolygon().rotate(45);
 		//TODO
-		//Change your character properties by calling the appropriate method of
-		//MyContent
-		
+		//Add your character to your game content
+
 	}
 
 }

@@ -1,8 +1,8 @@
-package game;
+package buttons;
 
-import gui.GameButton;
+import game.Game;
 
-public class EndButton extends GameButton{
+public class EndButton extends GameButton {
 	
 	public EndButton(String id, String name, int width, int height, int posX, int posY) {
 		super(id, name, width, height, posX, posY);

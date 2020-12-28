@@ -1,4 +1,4 @@
-package gui;
+package buttons;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -97,7 +97,7 @@ public class GameButton {
 	//This function is a placeholder and should be overriden in derived specific buttons
 	public void buttonAction() {
 		System.out.println(id + " clicked");
-		Game.UI().frame.requestFocus();
+		Game.UI().frame().requestFocus();
 	}
 		
 }

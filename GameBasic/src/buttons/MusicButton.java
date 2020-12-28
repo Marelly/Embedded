@@ -1,8 +1,7 @@
-package my_game;
+package buttons;
 
 import game.Game;
 import game.AudioPlayer.MusicStatus;
-import gui.GameButton;
 
 public class MusicButton extends GameButton{
 	

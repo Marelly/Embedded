@@ -106,6 +106,9 @@ public class GameCanvas extends JPanel  {
 		if (shape != null) {
 			shape.move(dx, dy);
 			this.repaint();
+			if (shape.getshapeListener() != null) {
+				shape.getshapeListener().shapeMoved(id, dx, dy);
+			}
 		}
 	}
 
@@ -256,7 +259,6 @@ public class GameCanvas extends JPanel  {
 			public void mouseMoved(final MouseEvent event) {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					System.out.println("mouse moved over shape " + shape.getId());
 					Game.MouseHandler().mouseMovedOverShape(shape, event.getX(), event.getY());
 				}
 				else {
@@ -268,7 +270,6 @@ public class GameCanvas extends JPanel  {
 			public void mouseDragged(final MouseEvent event) {
 				final Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					System.out.println("mouse Dragged over shape " + shape.getId());
 					Game.MouseHandler().mouseDraggedOverShape(shape, event.getX(), event.getY());
 				}
 				else {

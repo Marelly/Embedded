@@ -1,14 +1,13 @@
-package my_game;
+package buttons;
 
 import game.Game;
-import gui.GameButton;
-import gui.GameCanvas;
 import main.MyContent;
 
-public class AddButton extends GameButton{
+public class EditPolygonButton extends GameButton{
 	
-	public AddButton(String id, String name, int posX, int posY) {
-		super(id, name, 100, 40, posX, posY);
+	public EditPolygonButton(String id, String name, int posX, int posY) {
+		super(id, name, 160, 40, posX, posY);
+		this.setText("Edit Polygon");
 	}
 
 	@Override
@@ -18,9 +17,11 @@ public class AddButton extends GameButton{
 		super.buttonAction();
 		
 		MyContent content = (MyContent) Game.Content();
-		//TODO
-		//Add your character to your game content
-		
+		if (content.polygon().isEditMode()) {
+			content.polygon().exitEditMode();
+		} else {
+			content.polygon().enterEditMode();
+		}
 	}
 
 }

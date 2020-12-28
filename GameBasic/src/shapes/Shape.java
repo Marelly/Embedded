@@ -4,8 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import game.Game;
-import my_game.Point;
+import game.ShapeListener;
 
 public abstract class Shape {
 	
@@ -19,7 +18,9 @@ public abstract class Shape {
 	private Color color = Color.red;
 	private int weight = 1;
 	private int zOrder = 1;
-	private Point dragPoint;
+	private boolean isDraggable = true;
+
+	private ShapeListener shapeListener = null;
 	
 	public Shape(String id) {
 		this.id = id;
@@ -58,6 +59,23 @@ public abstract class Shape {
 	public int getzOrder() {
 		return zOrder;
 	}
+
+	public void setShapeListener (ShapeListener listener) {
+		this.shapeListener = listener;
+	}
+
+	public ShapeListener getshapeListener() {
+		return shapeListener;
+	}
+
+	public void setDraggable(boolean isDraggable) {
+		this.isDraggable = isDraggable;
+	}
+
+	public boolean isDraggable() {
+		return isDraggable;
+	}
+
 	/*
 	 * The following methods must be implemented by the classes (specific shapes) that
 	 * extend this class
@@ -70,23 +88,5 @@ public abstract class Shape {
 	public abstract void move(int dx, int dy);
 	public abstract void moveToLocation(int x, int y);
 	public abstract boolean isInArea(int x, int y);
-
-	public void startDrag(int x, int y) {
-		dragPoint = new Point(x,y);
-	}
-
-	public void endDrag(int x, int y) {
-	}
-
-	public void dragMove(int x, int y) {
-		int dx = x - dragPoint.x;
-		int dy = y - dragPoint.y;
-		dragPoint.x += dx;
-		dragPoint.y += dy;
-		Game.UI().canvas().moveShape(id, dx, dy);
-	}
-
-	
-		
 
 }

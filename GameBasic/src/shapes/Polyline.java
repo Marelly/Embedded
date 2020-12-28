@@ -4,6 +4,7 @@ package shapes;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
+import game.Game;
 import my_game.Point;
 
 public class Polyline extends FilledShape{
@@ -19,10 +20,17 @@ public class Polyline extends FilledShape{
 		updatePolygon();
 	}
 
+	public Point[] getPoints() {
+		return this.points;
+	}
+
 	public void updatePolygon() {
 		polygon = new Polygon();
 		for (int i = 0; i < points.length; i++) {
 			polygon.addPoint(points[i].x, points[i].y);
+		}
+		if (Game.UI() != null) { // Check that UI exists to support cases where a polygon is created before the canvas
+			Game.UI().canvas().repaint();
 		}
 	}
 
@@ -41,6 +49,29 @@ public class Polyline extends FilledShape{
 		for (int i = atIndex; i < tempPoints.length; i++) {
 			points[i+1] = tempPoints[i];
 		}
+		updatePolygon();
+	}
+
+	public void deletePoint(int atIndex) {
+		Point[] tempPoints = points;
+		// increase number of points by 1
+		points = new Point[tempPoints.length - 1];
+
+		// copy all points before index
+		for (int i = 0; i < atIndex; i++) {
+			points[i] = tempPoints[i];
+		}
+		// copy all points after index
+		for (int i = atIndex+1; i < tempPoints.length; i++) {
+			points[i-1] = tempPoints[i];
+		}
+		updatePolygon();
+	}
+
+
+	public void setPoint (int index, Point point) {
+		points[index].x = point.x;
+		points[index].y = point.y;
 		updatePolygon();
 	}
 
@@ -99,17 +130,5 @@ public class Polyline extends FilledShape{
 		int dy = y - points[0].y;
 		move(dx, dy);
 	}	
-	
-@Override
-public void startDrag(int x, int y) {
-	super.startDrag(x, y);
-	setIsFilled(false);
-}
-
-@Override
-public void endDrag(int x, int y) {
-	super.endDrag(x, y);
-	setIsFilled(true);
-}
 
 }
