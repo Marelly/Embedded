@@ -59,7 +59,7 @@ public class Ex2 {
         //--------------------------------------------------------------------------
 
         // The following code visualizes your shapes using a part of the game infrastructure
-        // You are welcome to read, understand and modify the visual representation of the elements ...
+        // You have to read, understand and modify the visual representation of the elements ...
 
         // Visualize your circles with the infrastructure circle shapes
         Circle c1 = new Circle("c1", mc1.getCenter().getX(), mc1.getCenter().getY(), mc1.getRadius());
