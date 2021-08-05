@@ -86,7 +86,7 @@ public class MyPolygon implements ShapeListener {
 	public void shapeStartDrag(String shapeID) {
 		if (shapeID.equals("Polygon")) {
 			exitEditMode();
-			visPolygon.setIsFilled(false);;
+			visPolygon.setIsFilled(false);
 			return;
 		} 
 		int index = Integer.valueOf(shapeID.substring(1)); // remove the first letter and get the index

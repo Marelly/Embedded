@@ -19,6 +19,8 @@ public class MyPeriodicLoop extends PeriodicLoop {
 	public void execute() {
 		// Let the super class do its work first
 		super.execute();
+		
+		// You can comment this line if you don't want the pokimon to move.
 		redrawPokimon();
 		
 		//TODO
