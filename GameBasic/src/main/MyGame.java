@@ -25,7 +25,7 @@ public class MyGame extends Game {
 		
 		GameCanvas canvas = gameUI.canvas();
 		canvas.setBackground(Color.WHITE);
-		
+		canvas.setBackgroundImage("resources/background1.jpg");
 
 		Pokimon pokimon = content.pokimon();
 		Image image = new Image(pokimon.getImageID(), pokimon.getImageName(), 220,200, 100, 100);

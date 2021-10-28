@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -65,6 +66,8 @@ public class GameCanvas extends JPanel  {
 	
 	int positionX;
 	int positionY;
+
+	private ImageIcon backgroundImage = null;
 		
 	public GameCanvas() {
 		super();
@@ -73,6 +76,10 @@ public class GameCanvas extends JPanel  {
 		// Not relevant -> will be assigned by the default values in the 
 		this.setLayout(null);
 		addListeners();
+	}
+
+	public void setBackgroundImage(String imageFile) {
+		backgroundImage = new ImageIcon(imageFile);
 	}
 
 	public void addShape(final Shape shape) {
@@ -311,6 +318,15 @@ public class GameCanvas extends JPanel  {
 	@Override
 	public void paintComponent(Graphics g) {
 		 super.paintComponent(g);
+
+		// ***
+		// sets the background of the game - so all graphics will be on top it
+		// ***
+
+		// g.drawImage(new ImageIcon("resources/class1.png").getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
+		if (backgroundImage != null) {
+			g.drawImage(backgroundImage.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
+		}
 
 		 // Draw the shapes according to their ZOrder.
 		 // To have a geometric shape in front of another it should be drawn later.

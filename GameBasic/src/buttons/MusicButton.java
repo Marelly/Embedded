@@ -17,10 +17,12 @@ public class MusicButton extends GameButton{
 		if (Game.audioPlayer().getStatus() == MusicStatus.STOPPED) {
 			Game.audioPlayer().play("resources/audio/audio_sample.wav", 0);
 			this.setText("Stop");
+			Game.UI().canvas().setBackgroundImage("resources/background2.jpg");
 		}
 		else {
 			Game.audioPlayer().stop();
 			this.setText("Play");
+			Game.UI().canvas().setBackgroundImage("resources/background1.jpg");
 		}
 	}
 
