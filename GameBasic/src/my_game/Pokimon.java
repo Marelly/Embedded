@@ -120,6 +120,7 @@ public class Pokimon implements ShapeListener {
 			direction = directionPolicy;
 			location.x = desired.x;
 			location.y = desired.y;
+			Game.UI().canvas().moveToLocation(imageID, location.x, location.y);
 			try {
 				pokimonTable.insertRow(new String[] {PeriodicLoop.elapsedTime() + "", location.x + "", location.y +"", direction.toString()});
 				//Game.excelDB().commit();

@@ -30,7 +30,6 @@ public class MyPeriodicLoop extends PeriodicLoop {
 	
 	private void redrawPokimon() {
 		content.pokimon().move();
-		Game.UI().canvas().moveToLocation("pokimon", content.pokimon().getLocation().x, content.pokimon().getLocation().y);
 	}
 
 	private void redrawCharacter() {
