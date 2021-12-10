@@ -1,6 +1,11 @@
 package my_game;
 
+import game.Game;
+import gui.GameCanvas;
 
+//TODO
+//Decide if you want to implemet the ShapeListener interface to handle drag and maouse events.
+//If so, add it to the class definition and implement the methods you want.
 public class MyCharacter {
 	
 	private Point location;
@@ -23,6 +28,12 @@ public class MyCharacter {
 	
 	public String getImageID() {
 		return this.imageID;
+	}
+
+	public void addToCanvas() {
+		GameCanvas canvas = Game.UI().canvas();
+		//TODO
+		//Create the character's graphical elements and add them to the canvas
 	}
 	
 	//TODO

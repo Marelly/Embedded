@@ -48,12 +48,10 @@ public class MyContent extends GameContent{
 		//TODO
 		//Create an instance of your character and set its properties with
 		//initial values
-		//Make sure you set values to the location and imageID properties
 		
-		GameCanvas canvas = Game.UI().canvas();
+		
 		//TODO
-		//Add your character shape or image to the canvas using its addShape method
-		//Use the properties of your character for the parameters of the shape.
+		//Add your character visual representation to the canvas using its addToCanvas() method.
 
 	}
 	

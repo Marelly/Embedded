@@ -2,6 +2,7 @@ package my_game;
 
 import DB.ExcelTable;
 import game.ShapeListener;
+import gui.GameCanvas;
 import game.Game;
 import game.PeriodicLoop;
 import shapes.Image;
@@ -44,6 +45,15 @@ public class Pokimon implements ShapeListener {
 		pokimonTable = Game.excelDB().createTableFromExcel("pokimonMoves");
 		pokimonTable.deleteAllRows();
 	}	
+
+	public void addToCanvas() {
+		GameCanvas canvas = Game.UI().canvas();
+		Image image = new Image(getImageID(), getImageName(), 220,200, 100, 100);
+		image.setShapeListener(this);
+		image.setzOrder(3);
+		canvas.addShape(image);
+	}
+
 	
 	public Point getLocation() {
 		return this.location;
@@ -120,6 +130,7 @@ public class Pokimon implements ShapeListener {
 			direction = directionPolicy;
 			location.x = desired.x;
 			location.y = desired.y;
+			// After changing the pokimon self location, move also its image in the canvas accordingly.
 			Game.UI().canvas().moveToLocation(imageID, location.x, location.y);
 			try {
 				pokimonTable.insertRow(new String[] {PeriodicLoop.elapsedTime() + "", location.x + "", location.y +"", direction.toString()});

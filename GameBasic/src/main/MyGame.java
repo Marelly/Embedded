@@ -28,10 +28,7 @@ public class MyGame extends Game {
 		canvas.setBackgroundImage("resources/background1.jpg");
 
 		Pokimon pokimon = content.pokimon();
-		Image image = new Image(pokimon.getImageID(), pokimon.getImageName(), 220,200, 100, 100);
-		image.setShapeListener(pokimon);
-		image.setzOrder(3);
-		canvas.addShape(image);
+		pokimon.addToCanvas();
 		canvas.addShape(content.polygon().getVisualPolygon());
 		Circle c = new Circle("circle", 300, 300, 50);
 		c.setDraggable(false);
