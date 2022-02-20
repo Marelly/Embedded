@@ -112,20 +112,22 @@ public class ExcelTable {
     }
 
 
-    // insert a new row of key+values to the table
+   // insert a new row of key+values to the table
     // throws exception if the key is already exist
     public void insertRow(String[] row) throws Exception {
+        String tempRow[] = row.clone();
         String key = row[0];
-        if (excelMap.putIfAbsent(key, row) != null)
+        if (excelMap.putIfAbsent(key, tempRow) != null)
             throw new Exception("Primary key already exist!");
     }
 
     // updates a row in the table
     // throws exception if the key is absent
     public void updateRow(String[] row) throws Exception {
+        String tempRow[] = row.clone();
         String key = row[0];
         if (excelMap.get(key) != null)
-            excelMap.put(key, row);
+            excelMap.put(key, tempRow);
         else
             throw new Exception("Can't find primary key in table!");
     }
