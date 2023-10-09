@@ -1,9 +1,9 @@
-package main;
+package my_base;
 
 import my_game.Pokimon;
 import java.awt.event.KeyEvent;
 
-import game.KeyboardListener;
+import base.KeyboardListener;
 
 public class MyKeyboardListener extends KeyboardListener{
 

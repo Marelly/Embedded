@@ -1,4 +1,4 @@
-package game;
+package base;
 
 public interface ShapeListener {
     public void shapeMoved (String shapeID, int dx, int dy);

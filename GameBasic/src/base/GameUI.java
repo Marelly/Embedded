@@ -1,9 +1,10 @@
-package gui;
+package base;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import shapes.Image;
+import ui_elements.GameButton;
 
 
 public class GameUI {
@@ -65,8 +66,8 @@ public class GameUI {
 		gameUI.canvas().addShape(new Image("e2", "resources/Poki.jpg", 220, 220, 300, 10));
 		
 		//Add two buttons to the game's UI dashboard
-		gameUI.dashboard().addButton("e1", "button1", 100, 60, 10, 10);
-		gameUI.dashboard().addButton("e2", "button2", 100, 60, 200, 10);
+		gameUI.dashboard().addUIElement(new GameButton("e1", "button1", 100, 60, 10, 10));
+		gameUI.dashboard().addUIElement(new GameButton("e2", "button2", 100, 60, 200, 10));
 		
 		//Show the game UI 
 		gameUI.setVisible(true);

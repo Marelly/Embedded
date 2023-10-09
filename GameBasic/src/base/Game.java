@@ -1,8 +1,7 @@
-package game;
+package base;
 
 import DB.ExcelDB;
 import buttons.EndButton;
-import gui.GameUI;
 
 public abstract class Game {
 	protected static GameContent gameContent;
@@ -68,7 +67,7 @@ public abstract class Game {
 	
 	protected void initDashboard() {
 		// Add end button to terminate game
-		gameUI.dashboard().addButton(new EndButton("btnEND", "END", 100, 60, 850, 50));
+		gameUI.dashboard().addUIElement(new EndButton("btnEND", "END", 100, 60, 850, 50));
 	}
 	
 	//You can refer to the game UI from anywhere by Game.UI()

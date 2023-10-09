@@ -1,4 +1,4 @@
-package gui;
+package base;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,10 +6,6 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import shapes.Shape.STATUS;
-import ui_elements.GameButton;
-import ui_elements.GameCheckbox;
-import ui_elements.GameComboBox;
-import ui_elements.GameList;
 import ui_elements.UIElement;
 /**
  * A 2D screen that displays graphical entities and enables to set their location at runtime, causing an animation effect.

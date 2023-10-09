@@ -1,12 +1,12 @@
-package my_game;
+// package my_game;
 
-public class Point {
+// public class Point {
 	
-	//Although not recommended to use public variables, allows easy access through p.x
-	public int x, y;
+// 	//Although not recommended to use public variables, allows easy access through p.x
+// 	public int x, y;
 	
-	public Point(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-}
+// 	public Point(int x, int y) {
+// 		this.x = x;
+// 		this.y = y;
+// 	}
+// }

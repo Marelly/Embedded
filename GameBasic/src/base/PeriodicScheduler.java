@@ -1,12 +1,10 @@
-package game;
+package base;
 
 import static java.util.concurrent.TimeUnit.*;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-
-import gui.Sleeper;
 
 public class PeriodicScheduler {
 	public static int periodicInterval = 300;

@@ -1,7 +1,7 @@
-package main;
+package my_base;
 
-import game.Game;
-import game.MouseHandler;
+import base.Game;
+import base.MouseHandler;
 import shapes.Shape;
 
 public class MyMouseHandler extends MouseHandler {
@@ -12,37 +12,37 @@ public class MyMouseHandler extends MouseHandler {
 	@Override
 	public void screenClicked(int x, int y) {
 		super.screenClicked(x, y);
-		//TODO: Enter your specific code here
+		// Enter your specific code here
 	}
 
 	@Override
 	public void screenRightClicked(int x, int y) {
 		super.screenRightClicked(x, y);
-		//TODO: Enter your specific code here
+		// Enter your specific code here
 	}
 	
 	@Override
 	public void shapeClicked(Shape shape, int x, int y) {
 		super.shapeClicked(shape, x, y);
-		//TODO: Enter your specific code here
+		// Enter your specific code here
 	}
 	
 	@Override
 	public void shapeRightClicked(Shape shape, int x, int y) {
 		super.shapeRightClicked(shape, x, y);
-		//TODO: Enter your specific code here
+		// Enter your specific code here
 	}
 
 	@Override
     public void mouseMovedOverShape(Shape shape, int x, int y) {
 		super.mouseMovedOverShape(shape, x, y);
-		//TODO: Enter your specific code here
+		// Enter your specific code here
     }
 	
 	@Override
     public void mouseDraggedOverShape(Shape shape, int x, int y) {
 		super.mouseDraggedOverShape(shape, x, y);
-		//TODO: Enter your specific code here
+		// Enter your specific code here
 	}
 	
 	@Override 

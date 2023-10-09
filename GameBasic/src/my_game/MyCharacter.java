@@ -1,24 +1,25 @@
 package my_game;
 
-import game.Game;
-import gui.GameCanvas;
+import base.Game;
+import base.GameCanvas;
+import ui_elements.ScreenPoint;
 
 //TODO
 //Decide if you want to implemet the ShapeListener interface to handle drag and maouse events.
 //If so, add it to the class definition and implement the methods you want.
 public class MyCharacter {
 	
-	private Point location;
+	private ScreenPoint location;
 	private String imageID;
 	
 	//TODO
 	//Add your character properties
 	
-	public Point getLocation() {
+	public ScreenPoint getLocation() {
 		return this.location;
 	}
 	
-	public void setLocation(Point location) {
+	public void setLocation(ScreenPoint location) {
 		this.location = location;
 	}
 	

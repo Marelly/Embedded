@@ -1,14 +1,14 @@
-package game;
+package base;
 
-import my_game.Point;
 import shapes.Shape;
+import ui_elements.ScreenPoint;
 
 public class MouseHandler {
 
 	protected Shape draggedShape;
 	protected boolean onShape = false;
 	protected Shape shapeUnderMouse = null;
-	private Point dragPoint;
+	private ScreenPoint dragPoint;
 
 	public void screenClicked(int x, int y) {
 		System.out.println("Mouse clicked: " + x + ", "+ y);
@@ -81,7 +81,7 @@ public class MouseHandler {
 		System.out.println("Shape pressed: " + shape.getId());
 		if (shape.isDraggable()) {
 			draggedShape = shape;
-			dragPoint = new Point(x,y);
+			dragPoint = new ScreenPoint(x,y);
 			if (shape.getshapeListener() != null) {
 				shape.getshapeListener().shapeStartDrag(shape.getId());
 			}

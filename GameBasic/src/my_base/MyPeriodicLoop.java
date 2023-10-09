@@ -1,11 +1,11 @@
-package main;
+package my_base;
 
 
 
 
-import game.Game;
-import game.PeriodicLoop;
-import gui.GameCanvas;
+import base.Game;
+import base.GameCanvas;
+import base.PeriodicLoop;
 
 public class MyPeriodicLoop extends PeriodicLoop {
 

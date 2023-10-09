@@ -1,4 +1,4 @@
-package gui;
+package base;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,10 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import game.MouseHandler;
 import ui_elements.ScreenPoint;
 import ui_elements.UIElement;
-import game.Game;
 import shapes.Circle;
 import shapes.Image;
 import shapes.Line;
@@ -472,7 +470,6 @@ public class GameCanvas extends JPanel  {
 
 	}
 
-
 	public static void main(final String[] args) {
 		
 		//Create a frame window and set its name, size and behavior when clicking the X
@@ -525,7 +522,7 @@ public class GameCanvas extends JPanel  {
 		}
 		//Flicker pokemon
 		for (int i = 0; i< 4; i++) {
-			screen.flipStatus("e1");
+			screen.flipShapeStatus("e1");
 			Sleeper.sleep(200);
 		}
 		
@@ -555,13 +552,13 @@ public class GameCanvas extends JPanel  {
 		((Image) screen.getShape("e1")).removeTextLabel();
 		Sleeper.sleep(1000);
 		
-		screen.hide("c1");
+		screen.hideShape("c1");
 		Sleeper.sleep(1000);
-		screen.show("c1");
+		screen.showShape("c1");
 		Sleeper.sleep(1000);
-		screen.hideAll();
+		screen.hideAllShapes();
 		Sleeper.sleep(1000);
-		screen.showAll();
+		screen.showAllShapes();
 	}
 
 }

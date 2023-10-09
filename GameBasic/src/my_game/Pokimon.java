@@ -1,11 +1,12 @@
 package my_game;
 
 import DB.ExcelTable;
-import game.ShapeListener;
-import gui.GameCanvas;
-import game.Game;
-import game.PeriodicLoop;
+import base.Game;
+import base.GameCanvas;
+import base.PeriodicLoop;
+import base.ShapeListener;
 import shapes.Image;
+import ui_elements.ScreenPoint;
 
 public class Pokimon implements ShapeListener {
 	
@@ -30,7 +31,7 @@ public class Pokimon implements ShapeListener {
 
 	private ExcelTable pokimonTable; 
 	
-	private Point location;
+	private ScreenPoint location;
 	private Direction directionPolicy = Direction.RIGHT;
 	private Direction direction = Direction.RIGHT;
 	
@@ -55,11 +56,11 @@ public class Pokimon implements ShapeListener {
 	}
 
 	
-	public Point getLocation() {
+	public ScreenPoint getLocation() {
 		return this.location;
 	}
 	
-	public void setLocation(Point location) {
+	public void setLocation(ScreenPoint location) {
 		this.location = location;
 	}
 
@@ -125,13 +126,13 @@ public class Pokimon implements ShapeListener {
 		
 		if (isMoving) {
 			// Move according to policy
-			Point desired = new Point(location.x + directionPolicy.xVec(), location.y + directionPolicy.yVec());
+			ScreenPoint desired = new ScreenPoint(location.x + directionPolicy.xVec(), location.y + directionPolicy.yVec());
 			// if move is possible, i.e., maze does not block
 			direction = directionPolicy;
 			location.x = desired.x;
 			location.y = desired.y;
 			// After changing the pokimon self location, move also its image in the canvas accordingly.
-			Game.UI().canvas().moveToLocation(imageID, location.x, location.y);
+			Game.UI().canvas().moveShapeToLocation(imageID, location.x, location.y);
 			try {
 				pokimonTable.insertRow(new String[] {PeriodicLoop.elapsedTime() + "", location.x + "", location.y +"", direction.toString()});
 				//Game.excelDB().commit();
@@ -149,13 +150,13 @@ public class Pokimon implements ShapeListener {
 
 	@Override
 	public void shapeStartDrag(String shapeID) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 
 	}
 
 	@Override
 	public void shapeEndDrag(String shapeID) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 
 	}
 

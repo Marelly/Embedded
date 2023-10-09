@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import game.Game;
-import game.GameContent;
+import base.Game;
+import base.GameContent;
 
 /*
  * The GameButton is a class that handles dashboard buttons.
@@ -16,7 +16,7 @@ import game.GameContent;
  * You can see an example in the class ExampleButton in package buttons.
  */
 
-public abstract class GameButton extends UIElement {
+public class GameButton extends UIElement {
 	
 	protected JButton button;
 	protected GameContent content;
@@ -41,6 +41,12 @@ public abstract class GameButton extends UIElement {
 	}
 	public String getText() {
 		return this.button.getText();
+	}
+
+	//This function is a placeholder and should be overriden in derived specific buttons
+	public void action() {
+		System.out.println(id + " clicked");
+		Game.UI().frame().requestFocus();
 	}
 	
 }

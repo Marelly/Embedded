@@ -4,7 +4,7 @@ package shapes;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import game.Game;
+import base.Game;
 import ui_elements.ScreenPoint;
 
 public class Polyline extends FilledShape{

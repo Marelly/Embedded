@@ -1,11 +1,11 @@
-package main;
+package my_base;
 
 import java.awt.Color;
 
-import game.Game;
-import game.GameContent;
-import gui.GameCanvas;
-import gui.GameDashboard;
+import base.Game;
+import base.GameCanvas;
+import base.GameContent;
+import base.GameDashboard;
 import buttons.AddButton;
 import buttons.ChangeButton;
 import buttons.CircleDragButton;
@@ -14,7 +14,6 @@ import buttons.MusicButton;
 import buttons.RotatePolygonButton;
 import my_game.Pokimon;
 import shapes.Circle;
-import shapes.Image;
 
 public class MyGame extends Game {
 	
@@ -43,20 +42,19 @@ public class MyGame extends Game {
 		dashboard.setBackground(Color.BLACK);
 		
 		// Add a the Polygon buttons
-		dashboard.addButton(new EditPolygonButton("editButton", "Edit", 60, 40));
-		dashboard.addButton(new RotatePolygonButton("rotateButton", "Rotate", 60, 100));
+		dashboard.addUIElement(new EditPolygonButton("editButton", "Edit", 60, 40));
+		dashboard.addUIElement(new RotatePolygonButton("rotateButton", "Rotate", 60, 100));
 
 		// Add a the Circle drag button
-		dashboard.addButton(new CircleDragButton("dragButton", "Drag", 280, 40));
+		dashboard.addUIElement(new CircleDragButton("dragButton", "Drag", 280, 40));
 
 
 		// Add a the AddButton button
-		dashboard.addButton(new AddButton("addButton", "Add", 540, 40));
+		dashboard.addUIElement(new AddButton("addButton", "Add", 540, 40));
 		
-		//TODO
 		// Add the ChangeButton button to the dashboard
-		dashboard.addButton(new ChangeButton("changeButton", "Change", 540, 100));
-		dashboard.addButton(new MusicButton("musicButton", "Play", 700, 40));
+		dashboard.addUIElement(new ChangeButton("changeButton", "Change", 540, 100));
+		dashboard.addUIElement(new MusicButton("musicButton", "Play", 700, 40));
 
 	}
 	

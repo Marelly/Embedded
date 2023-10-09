@@ -1,7 +1,8 @@
 package buttons;
 
-import game.Game;
+import base.Game;
 import shapes.Shape;
+import ui_elements.GameButton;
 
 public class CircleDragButton extends GameButton{
 	
@@ -11,10 +12,10 @@ public class CircleDragButton extends GameButton{
 	}
 
 	@Override
-	public void buttonAction() {
+	public void action() {
 		// The basic buttonAction prints the id of the button to the console.
 		// Keep the call to super to preserve this behavior or remove it if you don't want the printing.
-		super.buttonAction();
+		super.action();
 		
 		//TODO
 		//Add your character to your game content

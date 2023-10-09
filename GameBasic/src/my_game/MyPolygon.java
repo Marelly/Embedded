@@ -2,10 +2,11 @@ package my_game;
 
 import java.awt.Color;
 
-import game.ShapeListener;
-import game.Game;
+import base.Game;
+import base.ShapeListener;
 import shapes.Circle;
 import shapes.Polyline;
+import ui_elements.ScreenPoint;
 
 public class MyPolygon implements ShapeListener {
 	
@@ -15,11 +16,7 @@ public class MyPolygon implements ShapeListener {
 	private boolean isEditMode = false;
 	private int movingPointIndex;
 
-	
-	//TODO
-	//Add your character properties
-
-	public MyPolygon(Point[] points) {
+	public MyPolygon(ScreenPoint[] points) {
 		visPolygon = new Polyline("Polygon", points);
 		visPolygon.setIsFilled(true);
 		visPolygon.setFillColor(Color.GRAY);
@@ -36,7 +33,7 @@ public class MyPolygon implements ShapeListener {
 	}
 
 	public void enterEditMode() {
-		Point[] polyPoints = visPolygon.getPoints();
+		ScreenPoint[] polyPoints = visPolygon.getPoints();
 		points = new Circle[polyPoints.length];
 		for (int i = 0; i < polyPoints.length; i++) {
 			points[i] = new Circle("p"+i, polyPoints[i].x, polyPoints[i].y, 6);
@@ -78,8 +75,8 @@ public class MyPolygon implements ShapeListener {
 		if (shapeID.equals("Polygon")) {
 			return;
 		}
-		Point p = visPolygon.getPoints()[movingPointIndex];
-		visPolygon.setPoint(movingPointIndex, new Point(p.x + dx, p.y + dy));
+		ScreenPoint p = visPolygon.getPoints()[movingPointIndex];
+		visPolygon.setPoint(movingPointIndex, new ScreenPoint(p.x + dx, p.y + dy));
 	}
 
 	@Override
@@ -93,7 +90,7 @@ public class MyPolygon implements ShapeListener {
 		// if mid point, create a new point
 		if (shapeID.substring(0, 1).equals("m")) {
 			movingPointIndex = (index+1) % midPoints.length;
-			visPolygon.addPoint(new Point(midPoints[index].getPosX(), midPoints[index].getPosY()), movingPointIndex);
+			visPolygon.addPoint(new ScreenPoint(midPoints[index].getPosX(), midPoints[index].getPosY()), movingPointIndex);
 		} else {
 			movingPointIndex = index;
 		}
@@ -115,7 +112,7 @@ public class MyPolygon implements ShapeListener {
 
 	@Override
 	public void shapeClicked(String shapeID, int x, int y) {
-		// TODO Auto-generated method stub
+		// Enter your code here
 
 	}
 

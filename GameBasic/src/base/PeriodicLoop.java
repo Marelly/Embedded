@@ -1,4 +1,4 @@
-package game;
+package base;
 
 public abstract class  PeriodicLoop {
 	

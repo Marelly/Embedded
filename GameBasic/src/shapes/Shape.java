@@ -4,7 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import game.ShapeListener;
+import base.ShapeListener;
 
 public abstract class Shape {
 	protected boolean isDashed = false;

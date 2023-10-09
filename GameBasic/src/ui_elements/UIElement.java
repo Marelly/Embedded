@@ -1,8 +1,6 @@
 
 package ui_elements;
 
-import java.util.function.Supplier;
-
 import javax.swing.JComponent;
 
 import shapes.Shape.STATUS;

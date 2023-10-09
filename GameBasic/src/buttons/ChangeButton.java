@@ -1,8 +1,8 @@
 package buttons;
 
-import game.Game;
-import gui.GameCanvas;
-import main.MyContent;
+import base.Game;
+import my_base.MyContent;
+import ui_elements.GameButton;
 
 public class ChangeButton extends GameButton{
 	
@@ -11,10 +11,10 @@ public class ChangeButton extends GameButton{
 	}
 
 	@Override
-	public void buttonAction() {
+	public void action() {
 		// The basic buttonAction prints the id of the button to the console.
 		// Keep the call to super to preserve this behavior or remove it if you don't want the printing.
-		super.buttonAction();
+		super.action();
 		
 		MyContent content = (MyContent) Game.Content();
 		content.polygon().exitEditMode();

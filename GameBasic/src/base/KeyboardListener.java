@@ -1,5 +1,5 @@
 
-package game;
+package base;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,13 +13,12 @@ public class KeyboardListener {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
 			characterTyped(e.getKeyChar());
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
+			// Auto-generated method stub
 
 		}
 

@@ -1,4 +1,4 @@
-package game;
+package base;
 
 /*
  * This class should hold the content of the game, i.e., all characters and elements that are
