@@ -51,8 +51,11 @@ public class Line extends Shape {
 		if (x < Math.min(x1, x2) || x > Math.max(x1,x2) || y < Math.min(y1, y2) || y > Math.max(y1,y2)) {
 			return false;
 		}
-		//TODO: implement closeness to the line to return true
-		return false;
+		double lineSlope = (double)(y2-y1) / (double)(x2-x1);
+		// line: m(x-x1) + y1
+		double pointYOnLine  = ((lineSlope * (x-x1)) + y1);
+		// check if under the line one pixel above and over the line one pixel below
+		return ((y - 1)  <= pointYOnLine) && ((y + 1)  >= pointYOnLine); 
 	}
 	
 	@Override

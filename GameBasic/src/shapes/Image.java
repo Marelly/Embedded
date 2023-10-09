@@ -2,6 +2,7 @@ package shapes;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
+
 import javax.swing.ImageIcon;
 
 
@@ -14,7 +15,6 @@ public class Image extends Shape {
 	private int height;
 	private int posX;
 	private int posY;
-	private String src;
 	private int boundingWidth;
 	private int boundingHeight;
 	
@@ -24,7 +24,6 @@ public class Image extends Shape {
 		setImage(src, width, height);
 		this.posX = posX;
 		this.posY = posY;
-		this.src = src;
 		setRotation(0);
 	}
 	

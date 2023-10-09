@@ -2,6 +2,8 @@ package shapes;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 
 public class Text extends Shape {
 	private String text;
@@ -9,12 +11,14 @@ public class Text extends Shape {
 	private int posY;
 	private String fontName = "Ariel";
 	private int fontSize = 12;
+	private Font font;
 	
 	public Text(String id, String text, int posX, int posY) {
 		super(id);
 		this.posX = posX;
 		this.posY = posY;
 		this.text = text;
+		this.font = new Font(fontName, Font.BOLD, fontSize);	
 	}
 	public String getText() {
 		return text;
@@ -49,6 +53,15 @@ public class Text extends Shape {
 		this.fontName = fontName;
 	}
 
+	public int getTextHeight() {
+		FontRenderContext render = new FontRenderContext(new AffineTransform(), true, true);
+		return (int) (font.getStringBounds(text, render).getHeight());
+	}
+
+	public int getTextWidth() {
+		FontRenderContext render = new FontRenderContext(new AffineTransform(), true, true);
+		return (int) (font.getStringBounds(text, render).getWidth());
+	}
 	
 	@Override
 	public void draw(Graphics2D g) {

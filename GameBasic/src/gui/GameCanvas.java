@@ -14,6 +14,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import game.MouseHandler;
+import ui_elements.ScreenPoint;
+import ui_elements.UIElement;
 import game.Game;
 import shapes.Circle;
 import shapes.Image;
@@ -55,61 +58,86 @@ import shapes.TextLabel;
 public class GameCanvas extends JPanel  {
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	private final Map<String, Shape> shapes;
+	private final Map<String, UIElement> uiElements;
 
 	private Shape[] sortedShapes;
-	
+
 	private boolean resort = true;
 
 	int borderWidth;
-	
+
 	int positionX;
 	int positionY;
 
 	private ImageIcon backgroundImage = null;
-		
+	private ScreenPoint backgroundImagePoint = null;
+	private int[] backgroundImageSize = null;
+	private MouseHandler mouseHandler;
 	public GameCanvas() {
 		super();
 		this.setBackground(Color.WHITE);
 		this.shapes = new HashMap<>();
-		// Not relevant -> will be assigned by the default values in the 
+		this.uiElements = new HashMap<>();
+		// Not relevant -> will be assigned by the default values in the
 		this.setLayout(null);
 		addListeners();
 	}
 
+	public void setMouseHandler(MouseHandler mouseHandler) {
+		this.mouseHandler = mouseHandler;
+	}
+	public void setBackgroundImage(String imageFile, ScreenPoint point, int width, int height) {
+		backgroundImage = new ImageIcon(imageFile);
+		backgroundImagePoint = point;
+		backgroundImageSize = new int[2];
+		backgroundImageSize[0] = width;
+		backgroundImageSize[1] = height;
+	}
+
+	
 	public void setBackgroundImage(String imageFile) {
 		backgroundImage = new ImageIcon(imageFile);
 	}
 
-	public void addShape(final Shape shape) {
-		resort = true;
+	public void addUIElement(UIElement uiElement) {
+		uiElements.put(uiElement.getId(),uiElement);
+		this.add(uiElement.getJComponent());
+		this.updateUI();
+	}
+
+	public void addShape(Shape shape) {
 		shapes.put(shape.getId(), shape);
+		resort = true;
 		this.repaint();
 	}
-	
-	public Shape getShape(final String id) {
+
+	public Shape getShape(String id) {
 		return shapes.get(id);
 	}
 
-	public void changeImage(final String id, final String src, final int width, final int height)
-	{
-		final Shape shape = shapes.get(id);
-		if(shape == null){
+	public UIElement getUIElement(String id) {
+		return uiElements.get(id);
+	}
+
+	public void changeImage(String id, String src, int width, int height) {
+		Shape shape = shapes.get(id);
+		if (shape == null) {
 			return;
 		}
 		if (!(shape instanceof Image)) {
 			return;
 		}
-		final Image image = (Image) shape;
+		Image image = (Image) shape;
 		this.remove(image.getImg());
 		image.setImage(src, width, height);
 		this.add(image.getImg());
 		this.repaint();
-	} 
-			
-	public void moveShape(final String id, final int dx, final int dy) {
-		final Shape shape = shapes.get(id);
+	}
+
+	public void moveShape(String id, int dx, int dy) {
+		Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.move(dx, dy);
 			this.repaint();
@@ -119,63 +147,103 @@ public class GameCanvas extends JPanel  {
 		}
 	}
 
-	public void moveToLocation(final String id, final int cordX, final int cordY) {
-		final Shape shape = shapes.get(id);
+	public void moveShapeToLocation(String id, int cordX, int cordY) {
+		Shape shape = shapes.get(id);
 		if (shape != null) {
-			shape.moveToLocation(cordX, cordY);;
+			shape.moveToLocation(cordX, cordY);
+			;
 			this.repaint();
 		}
 	}
-	
-	public void deleteShape(final String id) {
-		final Shape shape = shapes.get(id);
+
+	public void deleteShape(String id) {
+		Shape shape = shapes.get(id);
 		if (shape != null) {
-			hide(id);
+			hideShape(id);
 			if (shape instanceof Image) {
-				final Image image = (Image) shape;
+				Image image = (Image) shape;
 				this.remove(image.getImg());
-			}	
+			}
 			shapes.remove(id);
 		}
 		resort = true;
 		this.repaint();
 	}
 
-	public void hideAll() {
-		for (final Shape shape : shapes.values()) {
+	public void deleteUIElement(String id) {
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			hideShape(id);
+			shapes.remove(id);
+		}
+		resort = true;
+		this.repaint();
+	}
+
+	public void hideAllShapes() {
+		for (Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.HIDE);
 		}
 		resort = true;
 		this.repaint();
 	}
 
-	public void showAll() {
-		for (final Shape shape : shapes.values()) {
+	public void hideAllUIElements() {
+		for (UIElement uiElement : uiElements.values()) {
+			uiElement.setStatus(STATUS.HIDE);
+		}
+		resort = true;
+		this.repaint();
+	}
+
+	public void showAllShapes() {
+		for (Shape shape : shapes.values()) {
 			shape.setStatus(STATUS.SHOW);
 		}
 		resort = true;
 		this.repaint();
 	}
 
-	public void deleteAll() {
+	public void showAllUIElements() {
+		for (UIElement uiElement : uiElements.values()) {
+			uiElement.setStatus(STATUS.SHOW);
+		}
+		resort = true;
+		this.repaint();
+	}
+
+	public void deleteAllShapes() {
 		Shape shape;
-		for (final String id : shapes.keySet()) {
+		for (String id : shapes.keySet()) {
 			shape = shapes.get(id);
 			if (shape != null) {
-				hide(id);
+				hideShape(id);
 			}
 			if (shape instanceof Image) {
-				final Image image = (Image) shape;
+				Image image = (Image) shape;
 				this.remove(image.getImg());
-			}	
+			}
 		}
 		shapes.clear();
 		resort = true;
 		this.repaint();
 	}
 
-	public void flipStatus(final String id) {
-		final Shape shape = shapes.get(id);
+	public void deleteAllUIElements() {
+		UIElement uiElement;
+		for (String id : uiElements.keySet()) {
+			uiElement = uiElements.get(id);
+			if (uiElement != null) {
+				hideShape(id);
+			}
+		}
+		shapes.clear();
+		resort = true;
+		this.repaint();
+	}
+
+	public void flipShapeStatus(String id) {
+		Shape shape = shapes.get(id);
 		if (shape != null) {
 			if (shape.getStatus() == STATUS.HIDE) {
 				shape.setStatus(STATUS.SHOW);
@@ -187,112 +255,141 @@ public class GameCanvas extends JPanel  {
 		this.repaint();
 	}
 
-	public void show(final String id) {
-		final Shape shape = shapes.get(id);
+	public void flipUIElementStatus(String id) {
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			if (uiElement.getStatus() == STATUS.HIDE) {
+				uiElement.setStatus(STATUS.SHOW);
+			} else if (uiElement.getStatus() == STATUS.SHOW) {
+				uiElement.setStatus(STATUS.HIDE);
+			}
+		}
+		resort = true;
+		this.repaint();
+	}
+
+	public void showShape(String id) {
+		Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.setStatus(STATUS.SHOW);
 		}
 		resort = true;
 		this.repaint();
 	}
-	
-	public void hide(final String id) {
-		final Shape shape = shapes.get(id);
+
+	public void showUIElement(String id) {
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			uiElement.setStatus(STATUS.SHOW);
+		}
+		resort = true;
+		this.repaint();
+	}
+
+	public void hideShape(String id) {
+		Shape shape = shapes.get(id);
 		if (shape != null) {
 			shape.setStatus(STATUS.HIDE);
 		}
 		resort = true;
 		this.repaint();
 	}
-	
+
+	public void hideUIElement(String id) {
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			uiElement.setStatus(STATUS.HIDE);
+		}
+		resort = true;
+		this.repaint();
+	}
+
 	protected void addListeners() {
 		this.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(final MouseEvent event) {
-				final Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseReleased(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					Game.MouseHandler().shapeReleased(shape, event.getX(), event.getY());
-				}
-				else {
-					Game.MouseHandler().screenReleased(event.getX(), event.getY());
+					mouseHandler.shapeReleased(shape, event.getX(), event.getY());
+				} else {
+					mouseHandler.screenReleased(event.getX(), event.getY());
 				}
 			}
 
 			@Override
-			public void mousePressed(final MouseEvent event) {
-				final Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mousePressed(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					Game.MouseHandler().shapePressed(shape, event.getX(), event.getY());
+					mouseHandler.shapePressed(shape, event.getX(), event.getY());
+				} else {
+					mouseHandler.screenPressed(event.getX(), event.getY());
 				}
-				else {
-					Game.MouseHandler().screenPressed(event.getX(), event.getY());
-				}
 			}
 
 			@Override
-			public void mouseExited(final MouseEvent event) {
+			public void mouseExited(MouseEvent event) {
 			}
 
 			@Override
-			public void mouseEntered(final MouseEvent event) {
+			public void mouseEntered(MouseEvent event) {
 			}
 
 			@Override
-			public void mouseClicked(final MouseEvent event) {
-				final Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseClicked(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
 					if (event.getButton() == 1) {// click
-						Game.MouseHandler().shapeClicked(shape, event.getX(), event.getY());
+						mouseHandler.shapeClicked(shape, event.getX(), event.getY());
 					}
 					if (event.getButton() == 3) {// rightclick
-						Game.MouseHandler().shapeRightClicked(shape, event.getX(), event.getY());
+						mouseHandler.shapeRightClicked(shape, event.getX(), event.getY());
 					}
-					
-				}
-				else {
+
+				} else {
 					if (event.getButton() == 1) {// click
-						Game.MouseHandler().screenClicked(event.getX(), event.getY());
-					}					
+						mouseHandler.screenClicked(event.getX(), event.getY());
+					}
 					if (event.getButton() == 3) {// rightclick
-						Game.MouseHandler().screenRightClicked(event.getX(), event.getY());
+						mouseHandler.screenRightClicked(event.getX(), event.getY());
 					}
 				}
 			}
 		});
-		
+
 		this.addMouseMotionListener(new MouseMotionListener() {
-			
+
 			@Override
-			public void mouseMoved(final MouseEvent event) {
-				final Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseMoved(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					Game.MouseHandler().mouseMovedOverShape(shape, event.getX(), event.getY());
-				}
-				else {
-					Game.MouseHandler().mouseMovedOverScreen(event.getX(), event.getY());
+					mouseHandler.mouseMovedOverShape(shape, event.getX(), event.getY());
+				} else {
+					mouseHandler.mouseMovedOverScreen(event.getX(), event.getY());
 				}
 			}
 
 			@Override
-			public void mouseDragged(final MouseEvent event) {
-				final Shape shape = getShapeByXY(event.getX(), event.getY());
+			public void mouseDragged(MouseEvent event) {
+				Shape shape = getShapeByXY(event.getX(), event.getY());
 				if (shape != null) {
-					Game.MouseHandler().mouseDraggedOverShape(shape, event.getX(), event.getY());
-				}
-				else {
-					Game.MouseHandler().mouseDraggedOverScreen(event.getX(), event.getY());
+					mouseHandler.mouseDraggedOverShape(shape, event.getX(), event.getY());
+				} else {
+					mouseHandler.mouseDraggedOverScreen(event.getX(), event.getY());
 				}
 
 			}
 		});
-		
-		
+
 	}
 
 	private Shape[] getImagesSortedByZOrder() {
 		if (resort) {
 			sortedShapes = shapes.values().toArray(new Shape[0]);
-			Arrays.sort(sortedShapes, (s1,s2) -> {return (s1.getzOrder() - s2.getzOrder());});
+			if(sortedShapes.length > 1) {
+				Arrays.sort(sortedShapes, (s1, s2) -> {
+					return (s1.getzOrder() - s2.getzOrder());
+				});
+			}
 			resort = false;
 		}
 		return sortedShapes;
@@ -302,42 +399,38 @@ public class GameCanvas extends JPanel  {
 		Shape[] tempShapes = getImagesSortedByZOrder();
 		Shape shape;
 
-		// Run over the shapes in reverse order so that top shape is selected 
+		// Run over the shapes in reverse order so that top shape is selected
 		// before a bottom shape.
-		for (int i = tempShapes.length-1; i >=0 ; i--) {
-		   shape = tempShapes[i];
-		   if (shape.getStatus() == STATUS.SHOW) {
-			   if (shape.isInArea(x, y)) {
+		for (int i = tempShapes.length - 1; i >= 0; i--) {
+			shape = tempShapes[i];
+			if (shape.getStatus() == STATUS.SHOW) {
+				if (shape.isInArea(x, y)) {
 					return shape;
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
-		 super.paintComponent(g);
+		super.paintComponent(g);
 
-		// ***
-		// sets the background of the game - so all graphics will be on top it
-		// ***
-
-		// g.drawImage(new ImageIcon("resources/class1.png").getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
 		if (backgroundImage != null) {
-			g.drawImage(backgroundImage.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
+			g.drawImage(backgroundImage.getImage(), (int) backgroundImagePoint.x, (int) backgroundImagePoint.y, backgroundImageSize[0], backgroundImageSize[1],  null);
 		}
 
-		 // Draw the shapes according to their ZOrder.
-		 // To have a geometric shape in front of another it should be drawn later.
-		 // To have an image in front of another it should be drawn earlier.
-		 // Thus, we traverse the array twice, in order for the shapes and then in reverse
-		 // order for the images.
-		 Shape[] tempShapes = getImagesSortedByZOrder();
-		 Shape shape;
-			  
-		 // Draw geometric shapes and texts in order
-		 for (int i = 0; i < tempShapes.length; i++) {
+		// Draw the shapes according to their ZOrder.
+		// To have a geometric shape in front of another it should be drawn later.
+		// To have an image in front of another it should be drawn earlier.
+		// Thus, we traverse the array twice, in order for the shapes and then in
+		// reverse
+		// order for the images.
+		Shape[] tempShapes = getImagesSortedByZOrder();
+		Shape shape;
+
+		// Draw geometric shapes and texts in order
+		for (int i = 0; i < tempShapes.length; i++) {
 			shape = tempShapes[i];
 			if (shape instanceof Image) {
 				continue; // Do not handle Images in this pass
@@ -360,7 +453,7 @@ public class GameCanvas extends JPanel  {
 		}
 
 		// Draw images in reverse order
-		for (int i = tempShapes.length-1; i >=  0; i--) {
+		for (int i = tempShapes.length - 1; i >= 0; i--) {
 			shape = tempShapes[i];
 			if (!(shape instanceof Image)) {
 				continue; // Do not handle Non-Image shapes in this pass

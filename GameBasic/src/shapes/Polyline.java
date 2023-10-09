@@ -5,22 +5,22 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 
 import game.Game;
-import my_game.Point;
+import ui_elements.ScreenPoint;
 
 public class Polyline extends FilledShape{
 	private Polygon polygon;
-	private Point[] points;
+	private ScreenPoint[] points;
 
-	public Polyline(String id, Point[] points) {
+	public Polyline(String id, ScreenPoint[] points) {
 		super(id);
-		this.points = new Point[points.length];
+		this.points = new ScreenPoint[points.length];
 		for (int i = 0; i < points.length; i++) {
-			this.points[i] = new Point(points[i].x, points[i].y);
+			this.points[i] = new ScreenPoint(points[i].x, points[i].y);
 		}
 		updatePolygon();
 	}
 
-	public Point[] getPoints() {
+	public ScreenPoint[] getPoints() {
 		return this.points;
 	}
 
@@ -34,10 +34,10 @@ public class Polyline extends FilledShape{
 		}
 	}
 
-	public void addPoint(Point point, int atIndex) {
-		Point[] tempPoints = points;
+	public void addPoint(ScreenPoint point, int atIndex) {
+		ScreenPoint[] tempPoints = points;
 		// increase number of points by 1
-		points = new Point[tempPoints.length + 1];
+		points = new ScreenPoint[tempPoints.length + 1];
 
 		// copy all points before index
 		for (int i = 0; i < atIndex; i++) {
@@ -53,9 +53,9 @@ public class Polyline extends FilledShape{
 	}
 
 	public void deletePoint(int atIndex) {
-		Point[] tempPoints = points;
+		ScreenPoint[] tempPoints = points;
 		// increase number of points by 1
-		points = new Point[tempPoints.length - 1];
+		points = new ScreenPoint[tempPoints.length - 1];
 
 		// copy all points before index
 		for (int i = 0; i < atIndex; i++) {
@@ -69,7 +69,7 @@ public class Polyline extends FilledShape{
 	}
 
 
-	public void setPoint (int index, Point point) {
+	public void setPoint (int index, ScreenPoint point) {
 		points[index].x = point.x;
 		points[index].y = point.y;
 		updatePolygon();
@@ -77,7 +77,7 @@ public class Polyline extends FilledShape{
 
 	public void rotate(int degAngle) {
 		double radAngle = Math.toRadians(degAngle);
-		Point center = new Point(0,0); // Find the center of the polygon to rotate around
+		ScreenPoint center = new ScreenPoint(0,0); // Find the center of the polygon to rotate around
 		for (int i = 0; i < points.length; i++) {
 			center.x += points[i].x;
 			center.y += points[i].y;
@@ -91,11 +91,11 @@ public class Polyline extends FilledShape{
 	}
 	
 	// Rotate a point around a given center with a specified angle
-	private Point rotatePoint(Point point, Point center, double radAngle) {
+	private ScreenPoint rotatePoint(ScreenPoint point, ScreenPoint center, double radAngle) {
 
 		double rotatedX = center.x + (point.x - center.x) * Math.cos(radAngle) - (point.y - center.y) * Math.sin(radAngle);
 		double rotatedY = center.y + (point.x - center.x) * Math.sin(radAngle) + (point.y - center.y) * Math.cos(radAngle);
-		return new Point((int) rotatedX, (int) rotatedY);
+		return new ScreenPoint((int) rotatedX, (int) rotatedY);
 	}
 
 	@Override

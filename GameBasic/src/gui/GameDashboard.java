@@ -1,14 +1,16 @@
 package gui;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import buttons.GameButton;
 import shapes.Shape.STATUS;
+import ui_elements.GameButton;
+import ui_elements.GameCheckbox;
+import ui_elements.GameComboBox;
+import ui_elements.GameList;
+import ui_elements.UIElement;
 /**
  * A 2D screen that displays graphical entities and enables to set their location at runtime, causing an animation effect.
  * 
@@ -40,7 +42,7 @@ public class GameDashboard extends JPanel  {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final Map<String, GameButton> buttons;
+	private final Map<String, UIElement> uiElements;
 
 	String borderColor;
 	int borderWidth;
@@ -53,122 +55,84 @@ public class GameDashboard extends JPanel  {
 		
 	public GameDashboard() {
 		super();
-		this.buttons = new HashMap<>();
+		this.uiElements = new HashMap<>();
 		this.setLayout(null);
-	}
-	/*
-	 * Add a basic button according to a set of parameters
-	 */
-	public void addButton(String id, String name, int width, int height,
-			int posX, int posY) {
-		GameButton button = new GameButton(id, name, width, height, posX, posY);
-		buttons.put(id, button);
-		this.add(button.getJButton());
-		this.updateUI();
 	}
 
 	/*
-	 * Add a specific button that is derived from GameButton and is created before.
+	 * Add a specific uiElement that is derived from UIElement and is created before.
 	 */
-	public void addButton(GameButton gameButton) {
-		buttons.put(gameButton.getId(), gameButton);
-		this.add(gameButton.getJButton());
+	public void addUIElement(UIElement uiElement) {
+		uiElements.put(uiElement.getId(), uiElement);
+		this.add(uiElement.getJComponent());
 		this.updateUI();
 	}
 	
-	public GameButton getButton(String id) {
-		return buttons.get(id);
+	public UIElement getUIElement(String id) {
+		return uiElements.get(id);
 	}
 	
-	public void delButton(String id) {
-		GameButton button = buttons.get(id);
-		if (button != null) {
-			this.remove(button.getJButton());
-			buttons.remove(id);
+	public void deleteUIElement(String id) {
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			this.remove(uiElement.getJComponent());
+			uiElements.remove(id);
 		}
 		this.updateUI();
 	}
 
 	public void hideAll() {
-		for (GameButton button : buttons.values()) {
-			button.setStatus(STATUS.HIDE);
-			this.remove(button.getJButton());
+		for (UIElement uiElement : uiElements.values()) {
+			uiElement.setStatus(STATUS.HIDE);
+			this.remove(uiElement.getJComponent());
 		}
 		this.updateUI();
 	}
 
 	public void showAll() {
-		for (GameButton button : buttons.values()) {
-			button.setStatus(STATUS.SHOW);
-			this.add(button.getJButton());
+		for (UIElement uiElement : uiElements.values()) {
+			uiElement.setStatus(STATUS.SHOW);
+			this.add(uiElement.getJComponent());
 		}
 		this.updateUI();
 	}
 
 	public void deleteAll() {
-		for (String id : buttons.keySet()) {
-			delButton(id);
+		for (String id : uiElements.keySet()) {
+			deleteUIElement(id);
 		}
 		this.updateUI();
 	}
 
 	public void flipStatus(String id) {
-		GameButton button = buttons.get(id);
-		if (button != null) {
-			if (button.getStatus().equals(STATUS.HIDE)) {
-				button.setStatus(STATUS.SHOW);
-				this.add(button.getJButton());
-			} else if (button.getStatus().equals(STATUS.SHOW)) {
-				button.setStatus(STATUS.HIDE);
-				this.remove(button.getJButton());
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			if (uiElement.getStatus().equals(STATUS.HIDE)) {
+				uiElement.setStatus(STATUS.SHOW);
+				this.add(uiElement.getJComponent());
+			} else if (uiElement.getStatus().equals(STATUS.SHOW)) {
+				uiElement.setStatus(STATUS.HIDE);
+				this.remove(uiElement.getJComponent());
 			}
 		}
 		this.updateUI();
 	}
 
 	public void show(String id) {
-		GameButton button = buttons.get(id);
-		if (button != null) {
-			button.setStatus(STATUS.SHOW);
-				this.add(button.getJButton());
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			uiElement.setStatus(STATUS.SHOW);
+				this.add(uiElement.getJComponent());
 		}
 		this.updateUI();
 	}
 	
 	public void hide(String id) {
-		GameButton button = buttons.get(id);
-		if (button != null) {
-			button.setStatus(STATUS.HIDE);
-				this.remove(button.getJButton());
+		UIElement uiElement = uiElements.get(id);
+		if (uiElement != null) {
+			uiElement.setStatus(STATUS.HIDE);
+				this.remove(uiElement.getJComponent());
 		}
 		this.updateUI();
 	}
-
-
-	public static void main(String[] args) {
-		//Create a frame window and set its name, size and behavior when clicking the X
-		JFrame frame = new JFrame("My Screen");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000, 1000);
-		
-		//Create a dashboard
-		GameDashboard dashboard = new GameDashboard();
-		
-		//Add a button to the dashboard
-		dashboard.addButton("b1", "button1", 100, 60, 10, 10);
-		
-		//Set the dashboard background color to red
-		dashboard.setBackground(Color.RED);
-		
-		//Add the dashboard to the frame window
-		frame.getContentPane().add(dashboard);
-		frame.setVisible(true);
-		
-		//Flip the visibility status of the button 10 times.
-		for (int i = 0; i< 10; i++) {
-			dashboard.flipStatus("b1");
-			Sleeper.sleep(200);
-		}
-	}
-
 }
