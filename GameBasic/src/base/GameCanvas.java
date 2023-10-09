@@ -96,7 +96,7 @@ public class GameCanvas extends JPanel  {
 
 	
 	public void setBackgroundImage(String imageFile) {
-		backgroundImage = new ImageIcon(imageFile);
+		setBackgroundImage(imageFile, new ScreenPoint(0,0), this.getWidth(), this.getHeight());
 	}
 
 	public void addUIElement(UIElement uiElement) {

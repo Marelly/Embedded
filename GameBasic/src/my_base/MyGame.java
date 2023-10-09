@@ -23,6 +23,7 @@ public class MyGame extends Game {
 	protected void initCanvas() {
 		
 		GameCanvas canvas = gameUI.canvas();
+		canvas.setMouseHandler(Game.MouseHandler());
 		canvas.setBackground(Color.WHITE);
 		canvas.setBackgroundImage("resources/background1.jpg");
 

@@ -6,7 +6,7 @@ import buttons.EndButton;
 public abstract class Game {
 	protected static GameContent gameContent;
 	protected static GameUI gameUI;
-	private static MouseHandler mouseHandler;
+	protected static MouseHandler mouseHandler;
 	private static KeyboardListener keyboardListener;
 	private static PeriodicScheduler scheduler;
 	private static AudioPlayer audioPlayer;
