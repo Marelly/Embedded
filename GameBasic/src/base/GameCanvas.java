@@ -86,17 +86,11 @@ public class GameCanvas extends JPanel  {
 	public void setMouseHandler(MouseHandler mouseHandler) {
 		this.mouseHandler = mouseHandler;
 	}
-	public void setBackgroundImage(String imageFile, ScreenPoint point, int width, int height) {
-		backgroundImage = new ImageIcon(imageFile);
-		backgroundImagePoint = point;
-		backgroundImageSize = new int[2];
-		backgroundImageSize[0] = width;
-		backgroundImageSize[1] = height;
-	}
+
 
 	
 	public void setBackgroundImage(String imageFile) {
-		setBackgroundImage(imageFile, new ScreenPoint(0,0), this.getWidth(), this.getHeight());
+		backgroundImage = new ImageIcon(imageFile);
 	}
 
 	public void addUIElement(UIElement uiElement) {
@@ -415,7 +409,7 @@ public class GameCanvas extends JPanel  {
 		super.paintComponent(g);
 
 		if (backgroundImage != null) {
-			g.drawImage(backgroundImage.getImage(), (int) backgroundImagePoint.x, (int) backgroundImagePoint.y, backgroundImageSize[0], backgroundImageSize[1],  null);
+			g.drawImage(backgroundImage.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
 		}
 
 		// Draw the shapes according to their ZOrder.
