@@ -8,10 +8,10 @@ import base.GameContent;
 import base.GameDashboard;
 import buttons.AddButton;
 import buttons.ChangeButton;
-import buttons.CircleDragButton;
 import buttons.EditPolygonButton;
 import buttons.MusicButton;
 import buttons.RotatePolygonButton;
+import my_game.DragCircleCB;
 import my_game.Pokimon;
 import shapes.Circle;
 
@@ -46,9 +46,8 @@ public class MyGame extends Game {
 		dashboard.addUIElement(new EditPolygonButton("editButton", "Edit", 60, 40));
 		dashboard.addUIElement(new RotatePolygonButton("rotateButton", "Rotate", 60, 100));
 
-		// Add a the Circle drag button
-		dashboard.addUIElement(new CircleDragButton("dragButton", "Drag", 280, 40));
-
+		// Add a the Circle drag checkbox
+		dashboard.addUIElement(new DragCircleCB("dragCB", "Drag Circle", 280, 80, 200, 40, false));
 
 		// Add a the AddButton button
 		dashboard.addUIElement(new AddButton("addButton", "Add", 540, 40));

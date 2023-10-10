@@ -9,13 +9,15 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import base.Game;
+
 /*
  * The GameList is a class that handles dashboard Lists (multiple selection).
  * To have a specific behavior to a List, you should create a class that extends GameList
  * and overrides it listAction method.
  */
 
-public abstract class GameList extends UIElement{
+public class GameList extends UIElement{
 
 	protected JList<String> list;
 	// Keeping an ordered list of the indicies chosen in the list, by the order of their selection 
@@ -89,5 +91,11 @@ public abstract class GameList extends UIElement{
 			selectedOptions[i] = String.valueOf(list.getModel().getElementAt(currentChosenPathIndicies.get(i).intValue()));
 		}
 		return selectedOptions;
+	}
+
+		//This function is a placeholder and should be overriden in derived specific buttons
+	public void action() {
+		System.out.println(id + " clicked");
+		Game.UI().frame().requestFocus();
 	}
 }

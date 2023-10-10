@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
+import base.Game;
+
 /*
  * The GameComboBox is a class that handles dashboard ComboBoxs.
  * To have a specific behavior to a ComboBox, you should create a class that extends GameComboBox
@@ -14,7 +16,7 @@ import javax.swing.JComboBox;
  * You can see an example in the class ExampleComboBox in package ComboBoxs.
  */
 
-public abstract class GameComboBox extends UIElement {
+public class GameComboBox extends UIElement {
 
 	protected JComboBox<String> comboBox;
 	protected String[] options;
@@ -41,5 +43,11 @@ public abstract class GameComboBox extends UIElement {
 
 	public String getOption() {
 		return options[comboBox.getSelectedIndex()];
+	}
+
+	//This function is a placeholder and should be overriden in derived specific buttons
+	public void action() {
+		System.out.println(id + " set to " + getOption());
+		Game.UI().frame().requestFocus();
 	}
 }

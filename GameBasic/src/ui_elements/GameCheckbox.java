@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JCheckBox;
+
+import base.Game;
+
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 
@@ -16,7 +19,7 @@ import java.awt.geom.AffineTransform;
  * You can see an example in the class Examplecheckbox in package checkboxs.
  */
 
-public abstract class GameCheckbox extends UIElement{
+public class GameCheckbox extends UIElement{
 
 	protected JCheckBox checkbox;
 	protected Font font;
@@ -80,5 +83,11 @@ public abstract class GameCheckbox extends UIElement{
 	public int getTextWidth() {
 		FontRenderContext render = new FontRenderContext(new AffineTransform(), true, true);
 		return (int) (font.getStringBounds(getText(), render).getWidth());
+	}
+
+	//This function is a placeholder and should be overriden in derived specific buttons
+	public void action() {
+		System.out.println(id + " set to " + isSelected());
+		Game.UI().frame().requestFocus();
 	}
 }
