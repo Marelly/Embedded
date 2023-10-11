@@ -1,7 +1,7 @@
 package base;
 
 import DB.ExcelDB;
-import buttons.EndButton;
+import my_ui_elements.EndButton;
 
 public abstract class Game {
 	protected static GameContent gameContent;

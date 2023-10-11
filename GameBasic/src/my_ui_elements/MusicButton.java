@@ -1,4 +1,4 @@
-package buttons;
+package my_ui_elements;
 
 import base.Game;
 import base.AudioPlayer.MusicStatus;

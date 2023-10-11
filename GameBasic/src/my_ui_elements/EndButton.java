@@ -1,4 +1,4 @@
-package buttons;
+package my_ui_elements;
 
 import base.Game;
 import ui_elements.GameButton;

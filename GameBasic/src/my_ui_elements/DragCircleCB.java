@@ -1,4 +1,4 @@
-package my_game;
+package my_ui_elements;
 
 import base.Game;
 import shapes.Shape;

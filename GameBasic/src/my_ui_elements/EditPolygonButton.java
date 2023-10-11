@@ -1,14 +1,14 @@
-package buttons;
+package my_ui_elements;
 
 import base.Game;
 import my_base.MyContent;
 import ui_elements.GameButton;
 
-public class RotatePolygonButton extends GameButton{
+public class EditPolygonButton extends GameButton{
 	
-	public RotatePolygonButton(String id, String name, int posX, int posY) {
+	public EditPolygonButton(String id, String name, int posX, int posY) {
 		super(id, name, 160, 40, posX, posY);
-		this.setText("Rotate Polygon");
+		this.setText("Edit Polygon");
 	}
 
 	@Override
@@ -18,12 +18,11 @@ public class RotatePolygonButton extends GameButton{
 		super.action();
 		
 		MyContent content = (MyContent) Game.Content();
-		content.polygon().exitEditMode();
-		content.polygon().getVisualPolygon().rotate(45);
-		//TODO
-		//Change your character properties by calling the appropriate method of
-		//MyContent
-		
+		if (content.polygon().isEditMode()) {
+			content.polygon().exitEditMode();
+		} else {
+			content.polygon().enterEditMode();
+		}
 	}
 
 }
