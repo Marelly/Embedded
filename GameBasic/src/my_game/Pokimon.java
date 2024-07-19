@@ -3,12 +3,16 @@ package my_game;
 import DB.ExcelTable;
 import base.Game;
 import base.GameCanvas;
+import base.Intersectable;
+import base.IntersectionAlgorithm;
 import base.PeriodicLoop;
 import base.ShapeListener;
+import my_base.MyContent;
 import shapes.Image;
+import shapes.Polyline;
 import ui_elements.ScreenPoint;
 
-public class Pokimon implements ShapeListener {
+public class Pokimon implements ShapeListener, Intersectable {
 	
 	public enum Direction{
 		RIGHT (10,0),
@@ -36,20 +40,29 @@ public class Pokimon implements ShapeListener {
 	private Direction direction = Direction.RIGHT;
 	
 	private final String[] images = {"resources/Poki.jpg", "resources/Poki2.jpg"};
+
+	/**
+	 * The following two arrays hold the widths and heights of the different images.
+	 */
+	private final int[] imageWidth = {220,260};
+	private final int[] imageHeight = {200,195};
+
 	private int imageIndex = 0;
 	private final String imageID = "pokimon";
 	private boolean isMoving = true;
 	private int rotation = 0;	// In degrees
 	
+	
 	public Pokimon() {
 		
 		pokimonTable = Game.excelDB().createTableFromExcel("pokimonMoves");
 		pokimonTable.deleteAllRows();
+		setLocation(new ScreenPoint(300, 300));
 	}	
 
 	public void addToCanvas() {
 		GameCanvas canvas = Game.UI().canvas();
-		Image image = new Image(getImageID(), getImageName(), 220,200, 100, 100);
+		Image image = new Image(getImageID(), getImageName(), getImageWidth(),getImageHeight(), location.x, location.y);
 		image.setShapeListener(this);
 		image.setzOrder(3);
 		canvas.addShape(image);
@@ -85,7 +98,15 @@ public class Pokimon implements ShapeListener {
 	public String getImageName() {
 		return images[imageIndex];
 	}
+
+	private int getImageWidth() {
+		return imageWidth[imageIndex];
+	}
 	
+	private int getImageHeight() {
+		return imageHeight[imageIndex];
+	}
+
 	public String getImageID() {
 		return this.imageID;
 	}
@@ -106,12 +127,7 @@ public class Pokimon implements ShapeListener {
 
 	public void setImage(int index) {
 		this.imageIndex = index;
-		if (imageIndex == 0) {
-			Game.UI().canvas().changeImage(imageID, getImageName(), 220, 200);
-		}
-		else {
-			Game.UI().canvas().changeImage(imageID, getImageName(), 260, 195);
-		}
+		Game.UI().canvas().changeImage(imageID, getImageName(), getImageWidth(), getImageHeight());
 	}
 
 	public void stopMoving() {
@@ -122,8 +138,27 @@ public class Pokimon implements ShapeListener {
 		isMoving = true;
 	}
 	
+	private void turn180 () {
+		switch (directionPolicy) {
+			case LEFT:
+				directionPolicy = Direction.RIGHT;
+				break;
+			case RIGHT:
+				directionPolicy = Direction.LEFT;
+				break;
+			case UP:
+				directionPolicy = Direction.DOWN;					
+				break;
+			case DOWN:
+				directionPolicy = Direction.UP;
+				break;
+		}
+	}
 	public void move() {
-		
+		MyPolygon polygon = ((MyContent) Game.Content()).polygon();
+		if (IntersectionAlgorithm.areIntersecting(this, polygon)) {
+			turn180();
+		}
 		if (isMoving) {
 			// Move according to policy
 			ScreenPoint desired = new ScreenPoint(location.x + directionPolicy.xVec(), location.y + directionPolicy.yVec());
@@ -183,4 +218,26 @@ public class Pokimon implements ShapeListener {
 
 	}
 	
+    @Override
+    public ScreenPoint[] getIntersectionVertices() {
+        int intersectionWidth = getImageWidth();
+        int intersectionHeight = getImageHeight();
+
+        int leftX = this.location.x;
+        int topY = this.location.y;
+
+        // ScreenPoint[] vertices = {
+        //         new ScreenPoint(centerX - intersectionWidth / 2, centerY - intersectionHeight / 2),
+        //         new ScreenPoint(centerX + intersectionWidth / 2, centerY - intersectionHeight / 2),
+        //         new ScreenPoint(centerX + intersectionWidth / 2, centerY + intersectionHeight / 2),
+        //         new ScreenPoint(centerX - intersectionWidth / 2, centerY + intersectionHeight / 2)
+        // };
+        ScreenPoint[] vertices = {
+			new ScreenPoint(leftX, topY),
+			new ScreenPoint(leftX + intersectionWidth, topY),
+			new ScreenPoint(leftX + intersectionWidth, topY + intersectionHeight),
+			new ScreenPoint(leftX, topY + intersectionHeight)
+	};
+        return vertices;
+    }
 }

@@ -3,7 +3,6 @@ package my_ui_elements;
 import base.Game;
 import my_base.MyContent;
 import my_game.Pokimon;
-import my_game.Pokimon.Direction;
 import ui_elements.GameComboBox;
 
 public class DirectionCombo extends GameComboBox{

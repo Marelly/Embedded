@@ -3,12 +3,13 @@ package my_game;
 import java.awt.Color;
 
 import base.Game;
+import base.Intersectable;
 import base.ShapeListener;
 import shapes.Circle;
 import shapes.Polyline;
 import ui_elements.ScreenPoint;
 
-public class MyPolygon implements ShapeListener {
+public class MyPolygon implements ShapeListener, Intersectable {
 	
 	private Polyline visPolygon;
 	private Circle[] points;
@@ -143,5 +144,10 @@ public class MyPolygon implements ShapeListener {
 		}
 
 	}
-}	
+
+	@Override
+    public ScreenPoint[] getIntersectionVertices() {
+		return this.visPolygon.getPoints();
+    }
+}
 
