@@ -5,6 +5,7 @@ import my_ui_elements.EndButton;
 
 public abstract class Game {
 	protected static GameContent gameContent;
+	protected static PeriodicLoop periodicLoop;
 	protected static GameUI gameUI;
 	protected static MouseHandler mouseHandler;
 	private static KeyboardListener keyboardListener;
@@ -28,6 +29,7 @@ public abstract class Game {
 	}
 	
 	public void setPeriodicLoop(PeriodicLoop periodicLoop) {
+		this.periodicLoop = periodicLoop;
 		scheduler.setPeriodicLoop(periodicLoop);
 	}
 	
@@ -86,6 +88,10 @@ public abstract class Game {
 	
 	public static GameContent Content() {
 		return gameContent;
+	}
+
+	public static PeriodicLoop periodicLoop() {
+		return periodicLoop;
 	}
 
 	public static ExcelDB excelDB() {

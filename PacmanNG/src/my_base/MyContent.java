@@ -2,10 +2,12 @@ package my_base;
 
 import java.awt.Color;
 
+import base.Game;
 import base.GameContent;
 import my_game.Maze;
 import my_game.Pacman;
 import my_game.Board;
+import my_game.GameControl;
 import my_game.Ghosts;
 import my_game.Score;
 import my_game.StatusLine;
@@ -17,12 +19,11 @@ public class MyContent extends GameContent{
 	private Score score;
 	private StatusLine statusLine;
 	private Board board;
+	private GameControl gameControl;
 
 	@Override
 	public void initContent() {
-		System.out.println("Start init content");
 		board = new Board();
-		System.out.println("Board created");
 		board.setContent(this);
 		maze = new Maze();
 		pacman = new Pacman(maze);
@@ -31,7 +32,10 @@ public class MyContent extends GameContent{
 		score = new Score();
 		statusLine = new StatusLine();
 		statusLine.showText("Good Luck!", Color.GREEN, 3000);
-		System.out.println("End init content");
+		gameControl = new GameControl(this);
+		((MyPeriodicLoop) Game.periodicLoop()).setGameControl(gameControl);
+
+
 
 	}	
 	
@@ -57,6 +61,10 @@ public class MyContent extends GameContent{
 
 	public Board getBoard() {
 		return this.board;
+	}
+
+	public GameControl gameControl() {
+		return this.gameControl;
 	}
 
 }

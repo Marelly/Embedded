@@ -19,7 +19,7 @@ public class MyGame extends Game {
 		 */
 		GameCanvas canvas = gameUI.canvas();
 		canvas.setMouseHandler(Game.MouseHandler());
-		
+
 		content.getBoard().setCanvas(canvas);
 		content.getBoard().initBoard();
 
@@ -60,8 +60,5 @@ public class MyGame extends Game {
 		game.setMouseHandler(new MyMouseHandler());
 		game.setKeyboardListener(new MyKeyboardListener());
 		game.initGame();
-		periodicLoop.setBoard(game.content.getBoard());
 	}
-
-
 }
