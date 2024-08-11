@@ -2,7 +2,6 @@ package my_base;
 
 import java.awt.Color;
 
-import base.Game;
 import base.GameContent;
 import my_game.Maze;
 import my_game.Pacman;
@@ -33,10 +32,6 @@ public class MyContent extends GameContent{
 		statusLine = new StatusLine();
 		statusLine.showText("Good Luck!", Color.GREEN, 3000);
 		gameControl = new GameControl(this);
-		((MyPeriodicLoop) Game.periodicLoop()).setGameControl(gameControl);
-
-
-
 	}	
 	
 	public Maze maze() {
