@@ -8,6 +8,8 @@ import my_game.Pacman;
 import my_game.Board;
 import my_game.GameControl;
 import my_game.Ghosts;
+import my_game.HistoryPlayer;
+import my_game.HistoryRecorder;
 import my_game.Score;
 import my_game.StatusLine;
 
@@ -19,6 +21,8 @@ public class MyContent extends GameContent{
 	private StatusLine statusLine;
 	private Board board;
 	private GameControl gameControl;
+	private HistoryRecorder historyRecorder;
+	private HistoryPlayer historyPlayer;
 
 	@Override
 	public void initContent() {
@@ -31,6 +35,8 @@ public class MyContent extends GameContent{
 		score = new Score();
 		statusLine = new StatusLine();
 		statusLine.showText("Good Luck!", Color.GREEN, 3000);
+		historyRecorder = new HistoryRecorder(this);
+		historyPlayer = new HistoryPlayer(this);
 		gameControl = new GameControl(this);
 	}	
 	
@@ -60,6 +66,14 @@ public class MyContent extends GameContent{
 
 	public GameControl gameControl() {
 		return this.gameControl;
+	}
+
+	public HistoryRecorder historyRecorder() {
+		return this.historyRecorder;
+	}
+
+	public HistoryPlayer historyPlayer() {
+		return this.historyPlayer;
 	}
 
 }

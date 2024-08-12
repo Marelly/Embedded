@@ -14,7 +14,9 @@ public class EndButton extends GameButton {
 		// The basic buttonAction prints the id of the button to the console.
 		// Keep the call to super to preserve this behavior or remove it if you don't want the printing.
 		super.action();
-		Game.excelDB().getTable("pokimonMoves").sortByKey();
+		Game.excelDB().getTable("PacmanHistory").sortByKey();
+		Game.excelDB().getTable("PacmanHistory").logTable();;
+
 		Game.excelDB().commit();
 		Game.endGame();
 

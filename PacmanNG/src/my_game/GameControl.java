@@ -27,6 +27,7 @@ public class GameControl {
 		board.updateScore();
 		content.statusLine().refresh();
 		board.updateStatusLine();
+		content.historyRecorder().recordState();
         checkGameOver();
 		
 	}

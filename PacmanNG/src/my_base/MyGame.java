@@ -6,6 +6,7 @@ import base.GameCanvas;
 import base.GameDashboard;
 import my_game.Maze.Direction;
 import my_ui_elements.DirectionButton;
+import my_ui_elements.RecordCB;
 
 
 public class MyGame extends Game {
@@ -35,6 +36,7 @@ public class MyGame extends Game {
 		dashboard.addUIElement(new DirectionButton("btnDown", "DOWN", 460, 100, Direction.DOWN));
 		dashboard.addUIElement(new DirectionButton("btnRight", "RIGHT", 520, 55, Direction.RIGHT));
 		dashboard.addUIElement(new DirectionButton("btnLeft", "LEFT", 400, 55, Direction.LEFT));
+		dashboard.addUIElement(new RecordCB("recordCB", "Recording", 200, 55, 100, 20, true));
 	}
 	
 	@Override
