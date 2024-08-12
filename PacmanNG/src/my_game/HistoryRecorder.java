@@ -22,7 +22,9 @@ public class HistoryRecorder {
 
     public void stopRecording() {
         isRecording = false;
-//        Game.excelDB().commit();
+        Game.excelDB().getTable("PacmanHistory").sortByKey();
+		Game.excelDB().getTable("PacmanHistory").logTable();;
+		Game.excelDB().commit();
     }
 
     public boolean isRecording() {
@@ -55,6 +57,10 @@ public class HistoryRecorder {
             System.out.println("Error inserting new line to pacman history table");			
         }
 
+    }
+
+    public ExcelTable getHistoryTable() {
+        return this.history;
     }
 
 }

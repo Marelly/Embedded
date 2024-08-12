@@ -24,7 +24,7 @@ public class Board {
 	 * Scale - the multiplication factor that to convert a grid cell into pixels.
 	 */
 	private final int BOARD_X_OFFSET = 80;
-	private final int BOARD_Y_OFFSET = 150;
+	private final int BOARD_Y_OFFSET = 120;
 	public static final int BOARD_SCALE = 40;
 	private GameCanvas canvas;
 	private MyContent content;
@@ -38,9 +38,10 @@ public class Board {
 	}
 
 	public void initBoard() {
+		canvas.deleteAllShapes();
 		Maze maze = content.maze();
 		canvas.setBackground(Color.BLACK);
-		canvas.addShape(new Image("title", "resources/PacmanTitle.png", 372, 123, 500, 70));
+		canvas.addShape(new Image("title", "resources/PacmanTitle.png", 372, 123, 500, 50));
 		addScore(content.score());
 		int i = 0;
 		for (MazeLine line: maze.lines()) {
@@ -57,6 +58,7 @@ public class Board {
 		addPacman(content.pacman());
 		addGhosts();
 		addStatusLine();
+		content.historyIndication().addToCanvas();
 	}
 
 	private void addLine(MazeLine line, int lineIndex) {
@@ -83,7 +85,7 @@ public class Board {
 	private void addPacman(Pacman pacman) {
 		Image image = new Image("pacman", "resources/pacman_right.png", 48,48, transX(pacman.getLocation().x)-24, transY(pacman.getLocation().y)-24);
 		canvas.addShape(image);
-		Text t2 = new Text("policy", pacman.getDirectionPolicy().toString() , BOARD_X_OFFSET,90);
+		Text t2 = new Text("policy", pacman.getDirectionPolicy().toString() , BOARD_X_OFFSET,70);
 		t2.setColor(Color.YELLOW);
 		t2.setFontSize(40);
 		canvas.addShape(t2);
@@ -98,7 +100,7 @@ public class Board {
 	}
 
 	private void addScore(Score score) {
-		Text t2 = new Text(score.guid(), score.getText() , 730,90);
+		Text t2 = new Text(score.guid(), score.getText() , 730,70);
 		t2.setColor(Color.YELLOW);
 		t2.setFontSize(40);
 		canvas.addShape(t2);
@@ -106,7 +108,7 @@ public class Board {
 
 	private void addStatusLine() {
 		StatusLine status = content.statusLine();
-		Text t2 = new Text(status.guid(), status.getText() , BOARD_X_OFFSET + 400, 760);
+		Text t2 = new Text(status.guid(), status.getText() , BOARD_X_OFFSET + 400, 740);
 		t2.setColor(status.getColor());
 		t2.setFontSize(30);
 		canvas.addShape(t2);

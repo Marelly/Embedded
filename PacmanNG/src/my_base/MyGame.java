@@ -6,7 +6,9 @@ import base.GameCanvas;
 import base.GameDashboard;
 import my_game.Maze.Direction;
 import my_ui_elements.DirectionButton;
+import my_ui_elements.PlayButton;
 import my_ui_elements.RecordCB;
+import java.awt.Color;
 
 
 public class MyGame extends Game {
@@ -23,20 +25,21 @@ public class MyGame extends Game {
 
 		content.getBoard().setCanvas(canvas);
 		content.getBoard().initBoard();
-
 	}
 	
 	@Override
 	protected void initDashboard() {
 		super.initDashboard();
 		GameDashboard dashboard = gameUI.dashboard();
+		dashboard.setBackground(Color.BLACK);
 				
 		// Add direction policy buttons
 		dashboard.addUIElement(new DirectionButton("btnUp", "UP", 460, 10, Direction.UP));
 		dashboard.addUIElement(new DirectionButton("btnDown", "DOWN", 460, 100, Direction.DOWN));
 		dashboard.addUIElement(new DirectionButton("btnRight", "RIGHT", 520, 55, Direction.RIGHT));
 		dashboard.addUIElement(new DirectionButton("btnLeft", "LEFT", 400, 55, Direction.LEFT));
-		dashboard.addUIElement(new RecordCB("recordCB", "Recording", 200, 55, 100, 20, true));
+		// dashboard.addUIElement(new RecordCB("recordCB", "Recording", 200, 55, 200, 40, true));
+		// dashboard.addUIElement(new PlayButton("btnPlay", "PLAY", 100, 40, 200, 110));
 	}
 	
 	@Override

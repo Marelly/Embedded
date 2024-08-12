@@ -66,7 +66,8 @@ public class Maze {
 
 	}
 	
-	private void initLollipops() {
+	public void initLollipops() {
+		numLollis = 0;
 		for (int y = 1; y < MAZE_Y_SIZE; y++) {
 			for (int x = 1; x < MAZE_X_SIZE; x++) {
 				if (!isOnMazeLine(x, y)) {

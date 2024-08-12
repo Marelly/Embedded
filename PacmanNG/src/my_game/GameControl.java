@@ -16,13 +16,19 @@ public class GameControl {
 	public void gameStep() {
 		
 		Lollipop lp = eatCurrentLolly(content.pacman().getLocation());
-		content.pacman().move();
+		// If history is played, restore locations from history.
+		// Otherwise, move pacman and ghosts according to
+		if (content.historyPlayer().isPlaying()) {
+			content.historyPlayer().playState();
+		} else {
+			content.pacman().move();
+			content.ghosts().move();
+		}
 		board.updatePacman();
+		board.updateGhosts();
 		if (lp != null) {
 			board.updateLolly(lp);
 		}
-		content.ghosts().move();
-		board.updateGhosts();
 		handleCollisions();
 		board.updateScore();
 		content.statusLine().refresh();
