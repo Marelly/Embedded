@@ -41,7 +41,7 @@ public class Board {
 		canvas.deleteAllShapes();
 		Maze maze = content.maze();
 		canvas.setBackground(Color.BLACK);
-		canvas.addShape(new Image("title", "resources/PacmanTitle.png", 372, 123, 500, 50));
+		canvas.addShape(new Image("title", "resources/PacmanTitle.png", 372, 123, 300, -10));
 		addScore(content.score());
 		int i = 0;
 		for (MazeLine line: maze.lines()) {

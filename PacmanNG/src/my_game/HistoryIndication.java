@@ -52,7 +52,7 @@ public class HistoryIndication implements ShapeListener {
 
 	public void addToCanvas() {
 		GameCanvas canvas = Game.UI().canvas();
-		Image image = new Image(imageID, historyState.filename(), width,height, 200, 730);
+		Image image = new Image(imageID, historyState.filename(), width,height, 175, 705);
 		image.setShapeListener(this);
 		image.setzOrder(3);
 		canvas.addShape(image);

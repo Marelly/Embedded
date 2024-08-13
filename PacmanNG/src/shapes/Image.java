@@ -63,7 +63,9 @@ public class Image extends Shape {
 		label.setRotation(rotation);
 		this.img = label;
 		this.width = width;
-		this.height = height;		
+		this.height = height;	
+		this.boundingWidth = width;
+		this.boundingHeight = height;	
 		// If there is an associated text, re-add it.
 		if (textLabel != null) {
 			addTextLabel(textLabel);
