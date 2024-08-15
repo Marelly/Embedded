@@ -30,7 +30,7 @@ public class MyContent extends GameContent{
 	public void initContent() {
 		board = new Board();
 		board.setContent(this);
-		maze = new Maze();
+		maze = new Maze(board);
 		pacman = new Pacman(maze);
 		ghosts = new Ghosts();
 		ghosts.initGhosts(maze);

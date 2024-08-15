@@ -26,11 +26,13 @@ public class Maze {
 	public static final int MAZE_X_SIZE = 21;
 	public static final int MAZE_Y_SIZE = 14;	
 	
+	private Board board;
 	private ArrayList<MazeLine> lines = new ArrayList<MazeLine>();
 	private Lollipop[][] lollipops = new Lollipop[MAZE_X_SIZE][MAZE_Y_SIZE];
 	private int numLollis = 0;
 	
-	public Maze() {
+	public Maze(Board board) {
+		this.board = board;
 		initMazeLines();
 		initLollipops();
 	}
@@ -77,6 +79,20 @@ public class Maze {
 			}
 		}
 		
+	}
+
+	public void addMazeToBoard() {
+		int i = 0;
+		for (MazeLine line: lines()) {
+			board.addLine(line, ++i);
+		}
+		for (int y = 1; y < MAZE_Y_SIZE; y++) {
+			for (int x = 1; x < MAZE_X_SIZE; x++) {
+				if (lollipops()[x][y] != null) {
+					board.addLollipop(lollipops()[x][y]);
+				}
+			}
+		}
 	}
 
 	public boolean blocksMove(BoardPoint p1, BoardPoint p2) {

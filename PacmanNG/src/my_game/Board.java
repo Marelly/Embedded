@@ -43,25 +43,14 @@ public class Board {
 		canvas.setBackground(Color.BLACK);
 		canvas.addShape(new Image("title", "resources/PacmanTitle.png", 372, 123, 300, -10));
 		addScore(content.score());
-		int i = 0;
-		for (MazeLine line: maze.lines()) {
-			addLine(line, ++i);
-		}
-		for (int y = 1; y < Maze.MAZE_Y_SIZE; y++) {
-			for (int x = 1; x < Maze.MAZE_X_SIZE; x++) {
-				if (maze.lollipops()[x][y] != null) {
-					addLollipop(maze.lollipops()[x][y]);
-				}
-			}
-		}
-		
+		maze.addMazeToBoard();		
 		addPacman(content.pacman());
 		addGhosts();
 		addStatusLine();
 		content.historyIndication().addToCanvas();
 	}
 
-	private void addLine(MazeLine line, int lineIndex) {
+	public void addLine(MazeLine line, int lineIndex) {
 		int minX = Math.min(line.p1.x, line.p2.x);
 		int maxX = Math.max(line.p1.x, line.p2.x);
 		int minY = Math.min(line.p1.y, line.p2.y);
@@ -74,7 +63,7 @@ public class Board {
 		canvas.addShape(rect);
 	}
 	
-	private void addLollipop(Lollipop lp) {
+	public void addLollipop(Lollipop lp) {
 		Circle circle = new Circle(lp.getGuid(), transX(lp.getLocation().x), transY(lp.getLocation().y), 3);
 		circle.setColor(Color.WHITE);
 		circle.setFillColor(Color.WHITE);
