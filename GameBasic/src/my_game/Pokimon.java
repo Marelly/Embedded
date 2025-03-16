@@ -1,5 +1,7 @@
 package my_game;
 
+import java.util.Arrays;
+
 import DB.ExcelTable;
 import base.Game;
 import base.GameCanvas;
@@ -154,6 +156,19 @@ public class Pokimon implements ShapeListener, Intersectable {
 				break;
 		}
 	}
+
+	public String[][] getLastTenMoves() {
+		pokimonTable.sortByKey();
+		String[][] moves = pokimonTable.getTableAsMatrix();
+        int numRows = moves.length;
+        // If less than or equal to 10 rows, return the entire array.
+        if (numRows <= 10) {
+            return moves;
+        }
+        // Otherwise, copy and return the last 10 rows.
+        return Arrays.copyOfRange(moves, numRows - 10, numRows);
+	}
+
 	public void move() {
 		MyPolygon polygon = ((MyContent) Game.Content()).polygon();
 		if (IntersectionAlgorithm.areIntersecting(this, polygon)) {
@@ -176,6 +191,11 @@ public class Pokimon implements ShapeListener, Intersectable {
 				System.out.println("Error inserting new line to pokimon table");			
 			}
 		}
+	}
+
+	public void showLastMoves() {
+		String[][] moves = getLastTenMoves();
+		pokimonTable.showTable("Last Moves", moves, 300, 250);
 	}
 
 	@Override

@@ -50,6 +50,9 @@ public class Board {
 		content.historyIndication().addToCanvas();
 	}
 
+	/**
+	 * Every maze line is drawn as a very thin rectangle
+	 */
 	public void addLine(MazeLine line, int lineIndex) {
 		int minX = Math.min(line.p1.x, line.p2.x);
 		int maxX = Math.max(line.p1.x, line.p2.x);

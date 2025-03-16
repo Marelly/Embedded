@@ -58,9 +58,9 @@ public class GameControl {
 			lp.hide();
 			content.score().add(1);
 			content.maze().decreaseLollis();
-			if (content.maze().currentLollies() == 0) {
-				content.statusLine().showText("Great JOB !!!", Color.YELLOW, 5000);
-			}
+			// if (content.maze().currentLollies() == 0) {
+			// 	content.statusLine().showText("Great JOB !!!", Color.YELLOW, 5000);
+			// }
 			return lp; 
 		}
 		return null;

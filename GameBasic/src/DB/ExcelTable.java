@@ -8,6 +8,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.util.*;
 
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
 public class ExcelTable {
 
     private HashMap<String, String[]> excelMap = new HashMap<String, String[]>();
@@ -265,5 +269,19 @@ public class ExcelTable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showTable(String title, String[][] tableMatrix, int width, int height) {
+        JFrame frame = new JFrame(title);
+        JScrollPane scrollPane = new JScrollPane();
+
+        JTable jTable = new JTable(tableMatrix, headings);
+
+        scrollPane.setViewportView(jTable);
+        jTable.setDefaultEditor(Object.class, null);
+        frame.setSize(width, height);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.add(scrollPane);
     }
 }

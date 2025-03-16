@@ -12,8 +12,11 @@ import my_ui_elements.ChangeButton;
 import my_ui_elements.DirectionCombo;
 import my_ui_elements.DragCircleCB;
 import my_ui_elements.EditPolygonButton;
+import my_ui_elements.EndButton;
+import my_ui_elements.GetNameButton;
 import my_ui_elements.MusicButton;
 import my_ui_elements.RotatePolygonButton;
+import my_ui_elements.SlowDownButton;
 import shapes.Circle;
 
 public class MyGame extends Game {
@@ -34,6 +37,13 @@ public class MyGame extends Game {
 		Circle c = new Circle("circle", 300, 300, 50);
 		c.setDraggable(false);
 		canvas.addShape(c);
+		/**
+		 * This is a use of a shape button.
+		 * Note that it uses the addToCanvas method of the button and is not added in the regular way,
+		 * since it includes multiple ui elements.
+		 */
+		SlowDownButton slow = new SlowDownButton("SlowDown", 800, 600);
+		slow.addToCanvas();
 	}
 	
 	@Override
@@ -60,6 +70,8 @@ public class MyGame extends Game {
 		dashboard.addUIElement(new ChangeButton("changeButton", "Change", 540, 100));
 		dashboard.addUIElement(new MusicButton("musicButton", "Play", 700, 40));
 
+		dashboard.addUIElement(new EndButton("btnEND", "END", 130, 40, 800, 50));
+		dashboard.addUIElement(new GetNameButton("btnName", "Get Name", 130, 40, 800, 100));
 	}
 	
 	@Override
