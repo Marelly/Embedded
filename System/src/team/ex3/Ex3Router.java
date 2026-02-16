@@ -1,0 +1,54 @@
+package team.ex3;
+
+import shared.Params;
+import shared.SubRouter;
+
+public class Ex3Router implements SubRouter {
+
+    private final Ex3Backend backend;
+
+    public Ex3Router() {
+        this.backend = new Ex3Backend();
+    }
+
+    @Override
+    public Object route(String subPath, Params p) {
+
+        switch (subPath) {
+
+            // UI calls once on startup
+            case "/start":
+                backend.startScenario();
+                return null;
+
+            // UI input: drag point
+            case "/point/move": {
+                int id = p.getInt(0);
+                double x = p.getDouble(1);
+                double y = p.getDouble(2);
+                backend.movePoint(id, x, y);
+                return null;
+            }
+
+            // UI input: drag circle
+            case "/circle/move": {
+                int id = p.getInt(0);
+                double cx = p.getDouble(1);
+                double cy = p.getDouble(2);
+                backend.moveCircle(id, cx, cy);
+                return null;
+            }
+
+            // UI input: resize circle
+            case "/circle/radius": {
+                int id = p.getInt(0);
+                double r = p.getDouble(1);
+                backend.setCircleRadius(id, r);
+                return null;
+            }
+
+            default:
+                throw new RuntimeException("Unknown geo route: " + subPath);
+        }
+    }
+}
