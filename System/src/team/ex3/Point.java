@@ -1,6 +1,6 @@
 package team.ex3;
 
-import shared.IdentifiedObject;
+import base.IdentifiedObject;
 
 public class Point extends IdentifiedObject {
     private double x;

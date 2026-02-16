@@ -1,4 +1,4 @@
-package shared;
+package base;
 
 public final class Params {
     private final Object[] v;

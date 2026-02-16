@@ -1,4 +1,4 @@
-package shared;
+package base;
 
 public abstract class IdentifiedObject {
     private final int id;

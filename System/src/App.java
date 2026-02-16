@@ -1,15 +1,25 @@
+import ai.ui.Ui;
 import shared.MainRouter;
-import shared.UiPort;
-import team.ex3.Ex3Router;
+import shared.routers.Ex3Router;
+import team.ex3.Ex3Backend;
 
 public class App {
 
-    private MainRouter mainRouter = new MainRouter();
+    private static MainRouter mainRouter = new MainRouter();
+    private static Ui ui;
+    private static Ex3Backend ex3Backend;
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        ui = new Ui();
+        ui.setUiPorts();
+        ex3Backend = new Ex3Backend();
+        registerAll();
+        ui.startUI();
+        ex3Backend.startScenario();
+        //System.out.println("Hello, World!");
     }
 
-    public static void registerAll(UiPort ui) {
-        mainRouter.addRouter("ex3", new Ex3Router(ui));
+    // TODO: Register all routers here
+    private static void registerAll() {
+        mainRouter.addRouter("ex3", new Ex3Router());
     }
 }

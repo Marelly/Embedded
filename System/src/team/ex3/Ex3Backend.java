@@ -1,16 +1,21 @@
 package team.ex3;
 
-import shared.UiPort;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ex3Backend {
+import shared.ui_ports.Ex3UiPort;
 
-    private final UiPort ui ;
+public class Ex3Backend {
 
     private final Map<Integer, Circle> circles = new HashMap<>();
     private final Map<Integer, Point> points = new HashMap<>();
 
+    /**
+     * Use ex3UiPort() as a function and not a variableto get the UI port
+     * to avoid trying to get it before it was set up by the UI 
+     * (which happens at UI startup, but this backend is constructed at app startup).
+     */
+    private Ex3UiPort ex3UiPort() { return Ex3UiPort.getInstance(); }
 
     // Called once at UI startup
     public void startScenario() {
@@ -35,14 +40,14 @@ public class Ex3Backend {
         circles.put(3, c3);
 
         // Tell UI to render objects (IDs only)
-        ui.addPoint(p1.getId(), p1.getX(), p1.getY());
-        ui.addPoint(p2.getId(), p2.getX(), p2.getY());
+        ex3UiPort().addPoint(p1.getId(), p1.getX(), p1.getY());
+        ex3UiPort().addPoint(p2.getId(), p2.getX(), p2.getY());
 
-        ui.addCircle(c1.getId(), c1.getCenter().getX(), c1.getCenter().getY(), c1.getR());
-        ui.addCircle(c2.getId(), c2.getCenter().getX(), c2.getCenter().getY(), c2.getR());
-        ui.addCircle(c3.getId(), c3.getCenter().getX(), c3.getCenter().getY(), c3.getR());
+        ex3UiPort().addCircle(c1.getId(), c1.getCenter().getX(), c1.getCenter().getY(), c1.getR());
+        ex3UiPort().addCircle(c2.getId(), c2.getCenter().getX(), c2.getCenter().getY(), c2.getR());
+        ex3UiPort().addCircle(c3.getId(), c3.getCenter().getX(), c3.getCenter().getY(), c3.getR());
 
-        ui.log("Scenario started: 3 circles + 2 points.");
+        ex3UiPort().log("Scenario started: 3 circles + 2 points.");
         evaluateAndCommandUi();
     }
 
@@ -51,7 +56,7 @@ public class Ex3Backend {
         Point p = requirePoint(pointId);
         p.setX(x);
         p.setY(y);
-        ui.updatePoint(pointId, x, y);
+        ex3UiPort().updatePoint(pointId, x, y);
         evaluateAndCommandUi();
     }
 
@@ -59,14 +64,14 @@ public class Ex3Backend {
         Circle c = requireCircle(circleId);
         c.getCenter().setX(cx);
         c.getCenter().setY(cy);
-        ui.updateCircle(circleId, cx, cy, c.getR());
+        ex3UiPort().updateCircle(circleId, cx, cy, c.getR());
         evaluateAndCommandUi();
     }
 
     public void setCircleRadius(int circleId, double r) {
         Circle c = requireCircle(circleId);
         c.setR(r);
-        ui.updateCircle(circleId, c.getCenter().getX(), c.getCenter().getY(), c.getR());
+        ex3UiPort().updateCircle(circleId, c.getCenter().getX(), c.getCenter().getY(), c.getR());
         evaluateAndCommandUi();
     }
 
@@ -86,13 +91,12 @@ public class Ex3Backend {
         boolean p2Inside = c1.contains(p2); // expected false initially
 
         // Student → UI commands (IDs only)
-        ui.paintPoint(1, p1Inside ? "red" : "black");
-        ui.paintPoint(2, p2Inside ? "red" : "black");
+        ex3UiPort().paintPoint(1, p1Inside ? "red" : "black");
+        ex3UiPort().paintPoint(2, p2Inside ? "red" : "black");
 
-        if (i12) ui.blinkCircle(2, 2);
-        if (i13) ui.blinkCircle(3, 2);
-
-        ui.log("Checks: c1∩c2=" + i12 + " c1∩c3=" + i13 + " p1∈c1=" + p1Inside + " p2∈c1=" + p2Inside);
+        if (i12) ex3UiPort().blinkCircle(2, 2);
+        if (i13) ex3UiPort().blinkCircle(3, 2);
+        ex3UiPort().log("Checks: c1∩c2=" + i12 + " c1∩c3=" + i13 + " p1∈c1=" + p1Inside + " p2∈c1=" + p2Inside);
     }
 
     private Circle requireCircle(int id) {

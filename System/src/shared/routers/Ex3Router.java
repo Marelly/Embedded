@@ -1,7 +1,8 @@
-package team.ex3;
+package shared.routers;
 
-import shared.Params;
-import shared.SubRouter;
+import base.Params;
+import base.SubRouter;
+import team.ex3.Ex3Backend;
 
 public class Ex3Router implements SubRouter {
 
