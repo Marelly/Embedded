@@ -84,8 +84,8 @@ public class Ex3Backend {
         Point p1 = requirePoint(1);
         Point p2 = requirePoint(2);
 
-        boolean i12 = c1.intersects(c2); // expected true initially
-        boolean i13 = c1.intersects(c3); // expected false initially
+        boolean c1InC2 = c1.intersects(c2); // expected true initially
+        boolean c1InC3 = c1.intersects(c3); // expected false initially
 
         boolean p1Inside = c1.contains(p1); // expected true initially
         boolean p2Inside = c1.contains(p2); // expected false initially
@@ -94,9 +94,9 @@ public class Ex3Backend {
         ex3UiPort().paintPoint(1, p1Inside ? "red" : "black");
         ex3UiPort().paintPoint(2, p2Inside ? "red" : "black");
 
-        if (i12) ex3UiPort().blinkCircle(2, 2);
-        if (i13) ex3UiPort().blinkCircle(3, 2);
-        ex3UiPort().log("Checks: c1∩c2=" + i12 + " c1∩c3=" + i13 + " p1∈c1=" + p1Inside + " p2∈c1=" + p2Inside);
+        if (c1InC2) ex3UiPort().blinkCircle(2, 2);
+        if (c1InC3) ex3UiPort().blinkCircle(3, 2);
+        //ex3UiPort().log("Checks: c1∩c2=" + c1InC2 + " c1∩c3=" + c1InC3 + " p1∈c1=" + p1Inside + " p2∈c1=" + p2Inside);
     }
 
     private Circle requireCircle(int id) {

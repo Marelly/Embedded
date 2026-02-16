@@ -14,7 +14,8 @@ public class Ex3Router implements SubRouter {
 
     @Override
     public Object route(String subPath, Params p) {
-        System.out.println("Routing Ex3: " + subPath + " with params " + p);
+        //Uncomment next line to see routing commands in console
+        //System.out.println("Routing Ex3: " + subPath + " with params " + p);
         switch (subPath) {
 
             // UI calls once on startup

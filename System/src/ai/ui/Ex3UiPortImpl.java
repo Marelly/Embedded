@@ -11,16 +11,12 @@ public class Ex3UiPortImpl extends Ex3UiPort {
     private Map<String, Point> points;
     private Map<String, Circle> circles;
     private JPanel panel;
-    private DrawingPanel drawingPanel;
     private Map<Integer, Timer> blinkTimers = new HashMap<>();
 
     public Ex3UiPortImpl(Map<String, Point> points, Map<String, Circle> circles, JPanel panel) {
         this.points = points;
         this.circles = circles;
         this.panel = panel;
-        if (panel instanceof DrawingPanel) {
-            this.drawingPanel = (DrawingPanel) panel;
-        }
     }
 
     @Override
