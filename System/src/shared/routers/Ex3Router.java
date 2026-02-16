@@ -2,6 +2,7 @@ package shared.routers;
 
 import base.Params;
 import base.SubRouter;
+import my_base.App;
 import team.ex3.Ex3Backend;
 
 public class Ex3Router implements SubRouter {
@@ -9,13 +10,13 @@ public class Ex3Router implements SubRouter {
     private final Ex3Backend backend;
 
     public Ex3Router() {
-        this.backend = new Ex3Backend();
+        this.backend = App.content().ex3Backend();
     }
 
     @Override
     public Object route(String subPath, Params p) {
-        //Uncomment next line to see routing commands in console
-        //System.out.println("Routing Ex3: " + subPath + " with params " + p);
+        // Uncomment next line to see routing commands in console
+        // System.out.println("Routing Ex3: " + subPath + " with params " + p);
         switch (subPath) {
 
             // UI calls once on startup
@@ -46,6 +47,12 @@ public class Ex3Router implements SubRouter {
                 int id = p.getInt(0);
                 double r = p.getDouble(1);
                 backend.setCircleRadius(id, r);
+                return null;
+            }
+
+            // UI input: resize circle
+            case "/periodic": {
+                backend.toggleRunPeriodic();
                 return null;
             }
 

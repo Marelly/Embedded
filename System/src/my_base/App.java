@@ -1,4 +1,7 @@
+package my_base;
 import ai.ui.Ui;
+import base.PeriodicLoop;
+import base.PeriodicScheduler;
 import shared.MainRouter;
 import shared.routers.Ex3Router;
 
@@ -6,17 +9,28 @@ public class App {
 
     private static MainRouter mainRouter = new MainRouter();
     private static Ui ui;
+    private static AppContent content = new AppContent();
     
     // TO_DO: Register all routers here
     private static void registerAll() {
         mainRouter.addRouter("ex3", new Ex3Router());
     }
+
+    // Allows all classes in teh system to access content
+    // entities from everywhere.
+    public static AppContent content() {
+        return content;
+    }
     
     public static void main(String[] args) throws Exception {
+        content.initContent();
         ui = new Ui();
         ui.setUiPorts();
         registerAll();
         ui.start(mainRouter);
+        PeriodicScheduler scheduler = new PeriodicScheduler();
+        scheduler.setPeriodicLoop(new MyPeriodicLoop());
+        scheduler.start();
     }
 
 }

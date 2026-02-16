@@ -3,49 +3,37 @@ package team.ex3;
 import java.util.HashMap;
 import java.util.Map;
 
+import my_base.App;
 import shared.ui_ports.Ex3UiPort;
 
 public class Ex3Backend {
 
-    private final Map<Integer, Circle> circles = new HashMap<>();
-    private final Map<Integer, Point> points = new HashMap<>();
-
     /**
      * Use ex3UiPort() as a function and not a variableto get the UI port
-     * to avoid trying to get it before it was set up by the UI 
-     * (which happens at UI startup, but this backend is constructed at app startup).
+     * to avoid trying to get it before it was set up by the UI
+     * (which happens at UI startup, but this backend is constructed at app
+     * startup).
      */
-    private Ex3UiPort ex3UiPort() { return Ex3UiPort.getInstance(); }
+    private Ex3UiPort ex3UiPort() {
+        return Ex3UiPort.getInstance();
+    }
+
+    private boolean runPeriodic = false;
 
     // Called once at UI startup
     public void startScenario() {
-        // Points (IDs 1..2)
-        Point p1 = new Point(1, 110, 110); // inside circle1 (expected true)
-        Point p2 = new Point(2, 200, 200); // outside circle1 (expected false)
-        points.put(1, p1);
-        points.put(2, p2);
-
-        // Circle centers (internal objects, but still ID'd)
-        Point c1Center = new Point(101, 100, 100);
-        Point c2Center = new Point(102, 140, 100);
-        Point c3Center = new Point(103, 250, 100);
-
-        // Circles (IDs 1..3)
-        Circle c1 = new Circle(1, c1Center, 50);
-        Circle c2 = new Circle(2, c2Center, 30);
-        Circle c3 = new Circle(3, c3Center, 20);
-
-        circles.put(1, c1);
-        circles.put(2, c2);
-        circles.put(3, c3);
+        Canvas canvas = App.content().canvas();
 
         // Tell UI to render objects (IDs only)
-        ex3UiPort().addPoint(p1.getId(), p1.getX(), p1.getY());
-        ex3UiPort().addPoint(p2.getId(), p2.getX(), p2.getY());
+        for (int i = 0; i < 3; i++) {
+            Circle c = canvas.getCircle(i);
+            ex3UiPort().addCircle(c.getId(), c.getCenter().getX(), c.getCenter().getY(), c.getR());
+        }
 
-        ex3UiPort().addCircle(c1.getId(), c1.getCenter().getX(), c1.getCenter().getY(), c1.getR());
-        ex3UiPort().addCircle(c2.getId(), c2.getCenter().getX(), c2.getCenter().getY(), c2.getR());
-        ex3UiPort().addCircle(c3.getId(), c3.getCenter().getX(), c3.getCenter().getY(), c3.getR());
+        for (int i = 0; i < 2; i++) {
+            Point p = canvas.getPoint(i);
+            ex3UiPort().addPoint(p.getId(), p.getX(), p.getY());
+        }
 
         ex3UiPort().log("Scenario started: 3 circles + 2 points.");
         evaluateAndCommandUi();
@@ -53,7 +41,7 @@ public class Ex3Backend {
 
     // UI input events call these via router
     public void movePoint(int pointId, double x, double y) {
-        Point p = requirePoint(pointId);
+        Point p = App.content().canvas().getPoint(pointId);
         p.setX(x);
         p.setY(y);
         ex3UiPort().updatePoint(pointId, x, y);
@@ -61,7 +49,7 @@ public class Ex3Backend {
     }
 
     public void moveCircle(int circleId, double cx, double cy) {
-        Circle c = requireCircle(circleId);
+        Circle c = App.content().canvas().getCircle(circleId);
         c.getCenter().setX(cx);
         c.getCenter().setY(cy);
         ex3UiPort().updateCircle(circleId, cx, cy, c.getR());
@@ -69,7 +57,7 @@ public class Ex3Backend {
     }
 
     public void setCircleRadius(int circleId, double r) {
-        Circle c = requireCircle(circleId);
+        Circle c = App.content().canvas().getCircle(circleId);
         c.setR(r);
         ex3UiPort().updateCircle(circleId, c.getCenter().getX(), c.getCenter().getY(), c.getR());
         evaluateAndCommandUi();
@@ -77,37 +65,40 @@ public class Ex3Backend {
 
     // Business logic: checks + UI commands
     private void evaluateAndCommandUi() {
-        Circle c1 = requireCircle(1);
-        Circle c2 = requireCircle(2);
-        Circle c3 = requireCircle(3);
+        Circle c0 = App.content().canvas().getCircle(0);
+        Circle c1 = App.content().canvas().getCircle(1);
+        Circle c2 = App.content().canvas().getCircle(2);
 
-        Point p1 = requirePoint(1);
-        Point p2 = requirePoint(2);
+        Point p0 = App.content().canvas().getPoint(0);
+        Point p1 = App.content().canvas().getPoint(1);
 
-        boolean c1InC2 = c1.intersects(c2); // expected true initially
-        boolean c1InC3 = c1.intersects(c3); // expected false initially
+        boolean c0InC1 = c0.intersects(c1); // expected true initially
+        boolean c0InC2 = c0.intersects(c2); // expected false initially
 
-        boolean p1Inside = c1.contains(p1); // expected true initially
-        boolean p2Inside = c1.contains(p2); // expected false initially
+        boolean p0Inside = c0.contains(p0); // expected true initially
+        boolean p1Inside = c0.contains(p1); // expected false initially
 
         // Student → UI commands (IDs only)
+        ex3UiPort().paintPoint(0, p0Inside ? "red" : "black");
         ex3UiPort().paintPoint(1, p1Inside ? "red" : "black");
-        ex3UiPort().paintPoint(2, p2Inside ? "red" : "black");
 
-        if (c1InC2) ex3UiPort().blinkCircle(2, 2);
-        if (c1InC3) ex3UiPort().blinkCircle(3, 2);
-        //ex3UiPort().log("Checks: c1∩c2=" + c1InC2 + " c1∩c3=" + c1InC3 + " p1∈c1=" + p1Inside + " p2∈c1=" + p2Inside);
+        if (c0InC1)
+            ex3UiPort().blinkCircle(1, 2);
+        if (c0InC2)
+            ex3UiPort().blinkCircle(2, 2);
+        // ex3UiPort().log("Checks: c1∩c2=" + c1InC2 + " c1∩c3=" + c1InC3 + " p1∈c1=" +
+        // p1Inside + " p2∈c1=" + p2Inside);
     }
 
-    private Circle requireCircle(int id) {
-        Circle c = circles.get(id);
-        if (c == null) throw new RuntimeException("Missing circle id=" + id);
-        return c;
+    public void moveCircle2(double dx, double dy) {
+        if (!runPeriodic)
+            return;
+        double cx = App.content().canvas().getCircle(2).getCenter().getX() + dx;
+        double cy = App.content().canvas().getCircle(2).getCenter().getY() + dy;
+        moveCircle(2, cx, cy);
     }
 
-    private Point requirePoint(int id) {
-        Point p = points.get(id);
-        if (p == null) throw new RuntimeException("Missing point id=" + id);
-        return p;
+    public void toggleRunPeriodic() {
+         this.runPeriodic = !this.runPeriodic;
     }
 }
