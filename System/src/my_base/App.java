@@ -1,6 +1,5 @@
 package my_base;
 import ai.ui.Ui;
-import base.PeriodicLoop;
 import base.PeriodicScheduler;
 import shared.MainRouter;
 import shared.routers.Ex3Router;
@@ -12,7 +11,7 @@ public class App {
     private static AppContent content = new AppContent();
     
     // TO_DO: Register all routers here
-    private static void registerAll() {
+    private static void registerRouters() {
         mainRouter.addRouter("ex3", new Ex3Router());
     }
 
@@ -26,7 +25,7 @@ public class App {
         content.initContent();
         ui = new Ui();
         ui.setUiPorts();
-        registerAll();
+        registerRouters();
         ui.start(mainRouter);
         PeriodicScheduler scheduler = new PeriodicScheduler();
         scheduler.setPeriodicLoop(new MyPeriodicLoop());

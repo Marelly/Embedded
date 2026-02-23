@@ -1,8 +1,5 @@
 package team.ex3;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import my_base.App;
 import shared.ui_ports.Ex3UiPort;
 

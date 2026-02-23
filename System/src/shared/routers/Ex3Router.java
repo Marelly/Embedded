@@ -57,7 +57,7 @@ public class Ex3Router implements SubRouter {
             }
 
             default:
-                throw new RuntimeException("Unknown geo route: " + subPath);
+                throw new RuntimeException("Unknown ex3 route: " + subPath);
         }
     }
 }
