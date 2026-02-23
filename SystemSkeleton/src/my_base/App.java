@@ -26,18 +26,17 @@ public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("App started - Initializing content ...");
         content.initContent();
-        System.out.println("Content initialized - Starting UI ...");
+        System.out.println("Creating UI instance...");
         ui = new Ui();
-        System.out.println("UI created - Setting UI ports ...");
+        System.out.println("Setting UI ports ...");
         ui.setUiPorts();
-        System.out.println("UI ports set - Registering routers ...");
+        System.out.println("Registering routers ...");
         registerRouters();
-        System.out.println("Routers registered - Starting UI ...");
+        System.out.println("Starting UI ...");
         ui.start(mainRouter);
         PeriodicScheduler scheduler = new PeriodicScheduler();
         scheduler.setPeriodicLoop(new MyPeriodicLoop());
         System.out.println("Starting periodic scheduler ...");
         scheduler.start();
     }
-
 }
