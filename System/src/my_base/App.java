@@ -20,7 +20,11 @@ public class App {
     public static AppContent content() {
         return content;
     }
-    
+ 
+    public static Ui UI() {
+        return ui;
+    }
+ 
     public static void main(String[] args) throws Exception {
         content.initContent();
         ui = new Ui();

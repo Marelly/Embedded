@@ -3,7 +3,7 @@ package shared.routers;
 import base.Params;
 import base.SubRouter;
 import my_base.App;
-import team.ex3.Ex3Backend;
+import team.control.Ex3Backend;
 
 public class Ex3Router implements SubRouter {
 

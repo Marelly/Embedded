@@ -1,4 +1,4 @@
-package team.ex3;
+package team.model;
 
 import base.IdentifiedObject;
 
