@@ -23,6 +23,10 @@ public class App {
         return content;
     }
 
+    public static Ui UI() {
+        return ui;
+    }
+
     public static void main(String[] args) throws Exception {
         System.out.println("App started - Initializing content ...");
         content.initContent();
