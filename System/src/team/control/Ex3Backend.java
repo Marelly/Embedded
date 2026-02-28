@@ -1,7 +1,10 @@
-package team.ex3;
+package team.control;
 
 import my_base.App;
 import shared.ui_ports.Ex3UiPort;
+import team.model.Canvas;
+import team.model.Circle;
+import team.model.Point;
 
 public class Ex3Backend {
 

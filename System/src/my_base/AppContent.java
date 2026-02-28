@@ -1,7 +1,7 @@
 package my_base;
 
-import team.ex3.Canvas;
-import team.ex3.Ex3Backend;
+import team.control.Ex3Backend;
+import team.model.Canvas;
 
 /*
  * This class should hold the content of the system, i.e., all elements that are

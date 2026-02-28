@@ -1,4 +1,4 @@
-package team.ex3;
+package team.model;
 
 public class Canvas {
     private Point[] points;
