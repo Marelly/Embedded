@@ -31,4 +31,8 @@ public abstract class DroneUiPort {
 
     public abstract void explode(double x, double y);
     public abstract void log(String message);
+
+    // ask UI to display a restart button which will call reset route
+    public abstract void showRestartButton();
+    public abstract void hideRestartButton();
 }

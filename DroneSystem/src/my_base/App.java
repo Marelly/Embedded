@@ -25,7 +25,14 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         System.out.println("App started - Initializing content ...");
-        content.initContent();
+        try {
+            content.initContent();
+        } catch (Exception ex) {
+            System.err.println("Error during content initialization:");
+            ex.printStackTrace();
+            // rethrow to stop startup
+            throw ex;
+        }
         System.out.println("Creating UI instance...");
         ui = new Ui();
         System.out.println("Setting UI ports ...");

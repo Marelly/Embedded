@@ -2,6 +2,7 @@ package ai.ui;
 
 import javax.imageio.ImageIO;
 
+import shared.MainRouter;
 import shared.ui_ports.DroneUiPort;
 import shared.AssetRegistry;
 
@@ -19,6 +20,8 @@ import java.util.Map;
 public class DroneUiPortImpl extends DroneUiPort {
 
     private MapPanel mapPanel;
+    private MainRouter router;
+    private javax.swing.JButton restartButton;
 
     // Image cache to avoid reloading the same image multiple times
     private final Map<String, BufferedImage> imageCache = new HashMap<>();
@@ -38,7 +41,12 @@ public class DroneUiPortImpl extends DroneUiPort {
         }
     }
 
+    public void setRouter(MainRouter router) {
+        this.router = router;
+    }
+
     public DroneUiPortImpl() {
+        // no-op constructor; button will be created when map panel is available
     }
 
     /**
@@ -46,6 +54,27 @@ public class DroneUiPortImpl extends DroneUiPort {
      */
     public void setMapPanel(MapPanel mapPanel) {
         this.mapPanel = mapPanel;
+        // create restart button overlayed on the map panel
+        restartButton = new javax.swing.JButton("Start Again");
+        restartButton.addActionListener(e -> {
+            if (router != null) {
+                router.route("/drone/reset", base.Params.of());
+            }
+            hideRestartButton();
+            if (mapPanel != null) {
+                mapPanel.requestFocusInWindow();
+            }
+        });
+        restartButton.setVisible(false);
+        // enlarge button by 50% over default preferred size
+        java.awt.Dimension orig = restartButton.getPreferredSize();
+        restartButton.setPreferredSize(new java.awt.Dimension((int) (orig.width * 1.5), (int) (orig.height * 1.5)));
+        // center button in the panel using GridBagLayout
+        mapPanel.setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        mapPanel.add(restartButton, gbc);
     }
 
     /**
@@ -159,6 +188,27 @@ public class DroneUiPortImpl extends DroneUiPort {
 
         mapPanel.setStatus(text);
         log("Status: " + text);
+    }
+
+    @Override
+    public void showRestartButton() {
+        if (mapPanel == null || restartButton == null)
+            return;
+        restartButton.setVisible(true);
+        mapPanel.revalidate();
+        mapPanel.repaint();
+    }
+
+    @Override
+    public void hideRestartButton() {
+        if (restartButton != null) {
+            restartButton.setVisible(false);
+            if (mapPanel != null) {
+                // reset joystick indicator when restarting
+                mapPanel.setJoystick(0, 0);
+                mapPanel.repaint();
+            }
+        }
     }
 
     @Override

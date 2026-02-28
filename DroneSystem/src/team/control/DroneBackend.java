@@ -52,6 +52,7 @@ public class DroneBackend {
         ui().setStatus("Flying. Reach both targets. Avoid the red zone.");
         ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
         ui().log("Drone scenario started.");
+        ui().hideRestartButton();
     }
 
     public void reset() {
@@ -73,6 +74,7 @@ public class DroneBackend {
 
         ui().setStatus("Reset.");
         ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
+        ui().hideRestartButton();
     }
 
     public void setThrottle(double value01) {
@@ -91,6 +93,9 @@ public class DroneBackend {
         if (d.getState() != DroneState.FLYING) {
             ui().updateDrone(d.getId(), d.getPos().x, d.getPos().y, d.getHeadingDeg());
             ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
+            if (d.getState() == DroneState.CRASHED || d.getState() == DroneState.COMPLETED) {
+                ui().showRestartButton();
+            }
             return;
         }
 
@@ -101,12 +106,12 @@ public class DroneBackend {
             d.setState(DroneState.CRASHED);
             ui().setStatus("Battery empty. Forced landing.");
             ui().explode(d.getPos().x, d.getPos().y);
+            ui().showRestartButton();
             return;
         }
 
         // Heading update (steer)
         d.setHeadingDeg(normalizeDeg(d.getHeadingDeg() + steerMinus1To1 * MAX_TURN_DEG_PER_SEC * dtSec));
-        System.out.println("Heading updated to " + d.getHeadingDeg() + " degrees.");
 
         // Speed update toward throttle target
         double targetSpeed = throttle01 * MAX_SPEED;
@@ -133,6 +138,7 @@ public class DroneBackend {
             d.setState(DroneState.CRASHED);
             ui().setStatus("CRASH: entered no-fly zone.");
             ui().explode(d.getPos().x, d.getPos().y);
+            ui().showRestartButton();
             return;
         }
 
@@ -147,6 +153,7 @@ public class DroneBackend {
         if (targets().allReached()) {
             d.setState(DroneState.COMPLETED);
             ui().setStatus("Mission completed! Final score: " + score.getValue());
+            ui().showRestartButton();
         }
 
         // Push state to UI
@@ -162,5 +169,19 @@ public class DroneBackend {
         double d = deg % 360.0;
         if (d < 0) d += 360.0;
         return d;
+    }
+
+    public void addTarget(double x, double y) {
+        int newId = Target.nextId;
+        Target t = new Target(newId, new Vec2(x, y), 28);
+        targets().add(t);
+        ui().spawnTarget(t.getId(), t.getPos().x, t.getPos().y, t.getRadius());
+    }
+
+    public void addNoFlyZone(double x, double y, double radius) {
+        int newId = NoFlyZone.nextId;
+        NoFlyZone n = new NoFlyZone(newId, new Vec2(x, y), radius);
+        zones().add(n);
+        ui().spawnNoFlyZone(n.getId(), n.getPos().x, n.getPos().y, n.getRadius());
     }
 }

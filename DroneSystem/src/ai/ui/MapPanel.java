@@ -4,21 +4,18 @@ import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.util.*;
-
-import ai.ui.DroneRenderer;
-import ai.ui.TargetRenderer;
-import ai.ui.NoFlyZoneRenderer;
-import ai.ui.ExplosionRenderer;
-import ai.ui.JoystickRenderer;
-import ai.ui.MapRenderer;
 
 /**
  * MapPanel is a custom JPanel that renders the drone control map.
  * It displays the background, drones, targets, no-fly zones, and explosions.
  */
 public class MapPanel extends JPanel {
+
+    private static final double WORLD_W = 900;
+    private static final double WORLD_H = 600;
 
     private final Map<Integer, DroneRenderer> drones = new HashMap<>();
     private final Map<Integer, TargetRenderer> targets = new HashMap<>();
@@ -32,6 +29,10 @@ public class MapPanel extends JPanel {
     private double telemetryBattery = 1.0;
     private int telemetryScore = 0;
     private String statusText = "Ready";
+
+    // temporary circle when user is creating a no-fly zone (world units)
+    private boolean drawingZone = false;
+    private double tempCircleX, tempCircleY, tempCircleRadius = 0;
 
     public MapPanel() {
         setBackground(Color.WHITE);
@@ -110,6 +111,25 @@ public class MapPanel extends JPanel {
         repaint();
     }
 
+    // zone creation helpers
+    public void startZone(double x, double y) {
+        drawingZone = true;
+        tempCircleX = x;
+        tempCircleY = y;
+        tempCircleRadius = 0;
+        repaint();
+    }
+
+    public void updateZone(double radius) {
+        tempCircleRadius = radius;
+        repaint();
+    }
+
+    public void finishZone() {
+        drawingZone = false;
+        repaint();
+    }
+
     /**
      * Clear all explosions that have expired
      */
@@ -128,6 +148,12 @@ public class MapPanel extends JPanel {
 
         // Draw background
         mapRenderer.paint(g2d, width, height);
+
+        // apply world->screen scaling
+        AffineTransform save = g2d.getTransform();
+        double sx = width / WORLD_W;
+        double sy = height / WORLD_H;
+        g2d.scale(sx, sy);
 
         // Draw no-fly zones
         for (NoFlyZoneRenderer nfz : noFlyZones.values()) {
@@ -150,8 +176,26 @@ public class MapPanel extends JPanel {
             explosion.paint(g2d);
         }
 
+        g2d.setTransform(save);
+
         // Draw HUD (telemetry and status)
         drawHUD(g2d);
+
+        // Draw temporary zone being created (scaled to screen)
+        if (drawingZone) {
+            AffineTransform save2 = g2d.getTransform();
+            double sx2 = width / WORLD_W;
+            double sy2 = height / WORLD_H;
+            g2d.scale(sx2, sy2);
+            g2d.setColor(new Color(0, 0, 255, 80));
+            g2d.fillOval((int) (tempCircleX - tempCircleRadius), (int) (tempCircleY - tempCircleRadius),
+                    (int) (tempCircleRadius * 2), (int) (tempCircleRadius * 2));
+            g2d.setColor(Color.BLUE);
+            g2d.setStroke(new BasicStroke(2));
+            g2d.drawOval((int) (tempCircleX - tempCircleRadius), (int) (tempCircleY - tempCircleRadius),
+                    (int) (tempCircleRadius * 2), (int) (tempCircleRadius * 2));
+            g2d.setTransform(save2);
+        }
 
         // Draw joystick indicator
         joystickRenderer.paint(g2d, width, height);

@@ -43,6 +43,21 @@ public class DroneRouter implements SubRouter {
                 return null;
             }
 
+            case "/model/add/target": {
+                double x = p.getInt(0);
+                double y = p.getInt(1);
+                backend.addTarget(x, y);
+                return null;
+            }
+
+            case "/model/add/no-fly-zone": {
+                double x = p.getInt(0);
+                double y = p.getInt(1);
+                double radius = p.getDouble(2);
+                backend.addNoFlyZone(x, y, radius);
+                return null;
+            }
+
             default:
                 throw new RuntimeException("Unknown drone route: " + subPath);
         }
