@@ -4,7 +4,7 @@ import base.PeriodicLoop;
 
 public class MyPeriodicLoop extends PeriodicLoop {
 
-	private AppContent content = App.content();
+	//private AppContent content = App.content();
 
 	@Override
 	public void execute() {

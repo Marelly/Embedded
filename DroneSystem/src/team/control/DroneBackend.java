@@ -1,187 +1,97 @@
 package team.control;
 
+import my_base.App;
 import shared.ui_ports.DroneUiPort;
-import team.model.*;
-import my_base.App;   // update this import to your actual App package name
+import team.model.Drone;
 
 public class DroneBackend {
 
-    // World bounds in "world units" that match your UI canvas
-    private static final double WORLD_W = 900;
-    private static final double WORLD_H = 600;
+    private final SceneControl sceneControl;
+    private final DroneControl droneControl;
+    private final TargetsControl targetsControl;
+    private final NoFlyZoneControl noFlyZoneControl;
 
-    // Control limits
-    private static final double MAX_SPEED = 220;          // units/sec
-    private static final double MAX_TURN_DEG_PER_SEC = 120;
-    private static final double ACCEL_PER_SEC = 220;
+    public DroneBackend() {
+        sceneControl = new SceneControl(App.content().wind());
+        droneControl = new DroneControl(App.content().drone(), sceneControl);
+        targetsControl = new TargetsControl(App.content().targets(), App.content().score());
+        noFlyZoneControl = new NoFlyZoneControl(App.content().noFlyZones());
+    }
 
-    // Inputs
-    private double throttle01 = 0.0;       // 0..1
-    private double steerMinus1To1 = 0.0;   // -1..1
-
-    // Environment
-    private Wind wind = App.content().wind(); 
-
-    // Score can live here (control concern)
-    private Score score = App.content().score();
-
-    private DroneUiPort ui() { return DroneUiPort.getInstance(); }
-
-    // Convenient accessors into content
-    private Drone drone() { return App.content().drone(); }
-    private Targets targets() { return App.content().targets(); }
-    private NoFlyZones zones() { return App.content().noFlyZones(); }
+    private DroneUiPort ui() {
+        return DroneUiPort.getInstance();
+    }
 
     public void start() {
-        Drone d = drone();
+        DroneUiPort ui = ui();
+        Drone drone = droneControl.drone();
 
-        d.setState(DroneState.FLYING);
-        d.setHeadingDeg(0);
-        d.setSpeed(0);
+        droneControl.start();
+        targetsControl.reset(ui);
+        sceneControl.start(ui);
+        ui.spawnDrone(drone.getId(), drone.getPos().x, drone.getPos().y, drone.getHeadingDeg());
+        targetsControl.start(ui);
+        noFlyZoneControl.start(ui);
 
-        score.reset();
-        throttle01 = 0;
-        steerMinus1To1 = 0;
-
-        ui().setBackground("map_desert");
-        ui().spawnDrone(d.getId(), d.getPos().x, d.getPos().y, d.getHeadingDeg());
-
-        targets().spawnAllToUi(ui());
-        zones().spawnAllToUi(ui());
-
-        ui().setStatus("Flying. Reach both targets. Avoid the red zone.");
-        ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
-        ui().log("Drone scenario started.");
-        ui().hideRestartButton();
+        ui.setStatus("Flying. Reach both targets. Avoid the red zone.");
+        droneControl.publish(ui, targetsControl.score());
+        ui.log("Drone scenario started.");
+        ui.hideRestartButton();
     }
 
     public void reset() {
-        Drone d = drone();
+        DroneUiPort ui = ui();
+        droneControl.reset();
+        targetsControl.reset(ui);
 
-        d.getPos().x = 120;
-        d.getPos().y = 520;
-        d.setHeadingDeg(0);
-        d.setSpeed(0);
-        d.setBattery01(1.0);
-        d.setState(DroneState.FLYING);
-
-        score.reset();
-        throttle01 = 0;
-        steerMinus1To1 = 0;
-
-        ui().updateDrone(d.getId(), d.getPos().x, d.getPos().y, d.getHeadingDeg());
-        targets().resetReached(ui());
-
-        ui().setStatus("Reset.");
-        ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
-        ui().hideRestartButton();
+        droneControl.publish(ui, targetsControl.score());
+        ui.setStatus("Reset.");
+        ui.hideRestartButton();
     }
 
     public void setThrottle(double value01) {
-        throttle01 = clamp(value01, 0, 1);
+        droneControl.setThrottle(value01);
     }
 
     public void setSteer(double valueMinus1To1) {
-        steerMinus1To1 = clamp(valueMinus1To1, -1, 1);
+        droneControl.setSteer(valueMinus1To1);
     }
 
     public void tick(double dtSec) {
-        if (dtSec <= 0) return;
+        if (dtSec <= 0)
+            return;
 
-        Drone d = drone();
+        DroneUiPort ui = ui();
+        Drone drone = droneControl.drone();
+        if (droneControl.handleStopped(ui, targetsControl.score()))
+            return;
 
-        if (d.getState() != DroneState.FLYING) {
-            ui().updateDrone(d.getId(), d.getPos().x, d.getPos().y, d.getHeadingDeg());
-            ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
-            if (d.getState() == DroneState.CRASHED || d.getState() == DroneState.COMPLETED) {
-                ui().showRestartButton();
-            }
+        if (!droneControl.tick(dtSec, ui))
+            return;
+
+        if (noFlyZoneControl.handleEntry(drone, ui)) {
             return;
         }
 
-        // Battery drain
-        double newBat = d.getBattery01() - dtSec * (0.012 + 0.02 * throttle01);
-        d.setBattery01(clamp(newBat, 0, 1));
-        if (d.getBattery01() <= 0.0001) {
-            d.setState(DroneState.CRASHED);
-            ui().setStatus("Battery empty. Forced landing.");
-            ui().explode(d.getPos().x, d.getPos().y);
-            ui().showRestartButton();
-            return;
-        }
-
-        // Heading update (steer)
-        d.setHeadingDeg(normalizeDeg(d.getHeadingDeg() + steerMinus1To1 * MAX_TURN_DEG_PER_SEC * dtSec));
-
-        // Speed update toward throttle target
-        double targetSpeed = throttle01 * MAX_SPEED;
-        double s = d.getSpeed();
-        if (s < targetSpeed) s = Math.min(targetSpeed, s + ACCEL_PER_SEC * dtSec);
-        else s = Math.max(targetSpeed, s - ACCEL_PER_SEC * dtSec);
-        d.setSpeed(s);
-
-        // Velocity from heading + wind
-        double rad = Math.toRadians(d.getHeadingDeg());
-        Vec2 v = new Vec2(Math.cos(rad), -Math.sin(rad)).mul(d.getSpeed()); // y inverted for screen coords
-        Vec2 totalV = v.add(wind.velocity());
-
-        // Position update
-        d.getPos().x += totalV.x * dtSec;
-        d.getPos().y += totalV.y * dtSec;
-
-        // Clamp to world
-        d.getPos().x = clamp(d.getPos().x, 0, WORLD_W);
-        d.getPos().y = clamp(d.getPos().y, 0, WORLD_H);
-
-        // Crash if inside no-fly zone
-        if (zones().isInsideAny(d.getPos())) {
-            d.setState(DroneState.CRASHED);
-            ui().setStatus("CRASH: entered no-fly zone.");
-            ui().explode(d.getPos().x, d.getPos().y);
-            ui().showRestartButton();
-            return;
-        }
-
-        // Check targets
-        int reachedNow = targets().checkAndUpdateReached(d.getPos(), ui());
+        int reachedNow = targetsControl.updateReached(drone.getPos(), ui);
         if (reachedNow > 0) {
-            score.onTargetReached(reachedNow);
-            ui().setStatus("Target reached! Score: " + score.getValue());
+            targetsControl.onTargetReached(reachedNow);
+            ui.setStatus("Target reached! Score: " + targetsControl.score());
         }
 
-        // Completed mission
-        if (targets().allReached()) {
-            d.setState(DroneState.COMPLETED);
-            ui().setStatus("Mission completed! Final score: " + score.getValue());
-            ui().showRestartButton();
+        if (targetsControl.allReached()) {
+            droneControl.complete(ui, targetsControl.score());
         }
 
-        // Push state to UI
-        ui().updateDrone(d.getId(), d.getPos().x, d.getPos().y, d.getHeadingDeg());
-        ui().setTelemetry(d.getSpeed(), d.getBattery01(), score.getValue());
-    }
-
-    private double clamp(double v, double lo, double hi) {
-        return Math.max(lo, Math.min(hi, v));
-    }
-
-    private double normalizeDeg(double deg) {
-        double d = deg % 360.0;
-        if (d < 0) d += 360.0;
-        return d;
+        droneControl.publish(ui, targetsControl.score());
     }
 
     public void addTarget(double x, double y) {
-        int newId = Target.nextId;
-        Target t = new Target(newId, new Vec2(x, y), 28);
-        targets().add(t);
-        ui().spawnTarget(t.getId(), t.getPos().x, t.getPos().y, t.getRadius());
+        targetsControl.add(x, y, ui());
     }
 
     public void addNoFlyZone(double x, double y, double radius) {
-        int newId = NoFlyZone.nextId;
-        NoFlyZone n = new NoFlyZone(newId, new Vec2(x, y), radius);
-        zones().add(n);
-        ui().spawnNoFlyZone(n.getId(), n.getPos().x, n.getPos().y, n.getRadius());
+        noFlyZoneControl.add(x, y, radius, ui());
     }
+
 }

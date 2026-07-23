@@ -58,6 +58,13 @@ public class DroneRouter implements SubRouter {
                 return null;
             }
 
+            case "/model/setWind": {
+                double x = p.getInt(0);
+                double y = p.getInt(1);
+                App.content().wind().setVelocity(x, y);
+                return null;
+            }
+            
             default:
                 throw new RuntimeException("Unknown drone route: " + subPath);
         }

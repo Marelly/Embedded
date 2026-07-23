@@ -8,4 +8,9 @@ public class Wind {
     public Vec2 velocity() {
         return v;   // constant everywhere
     }
+
+    public void setVelocity(double x, double y) {
+        v.x = x;
+        v.y = y;
+    }
 }
