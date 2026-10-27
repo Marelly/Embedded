@@ -17,5 +17,6 @@ public class MyPeriodicLoop extends PeriodicLoop {
 			content.teamBackend().doStep(step);
 			step++;
 		}
+		System.out.println("Periodic loop step " + step + " done");
 	}
 }
