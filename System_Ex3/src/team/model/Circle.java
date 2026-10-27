@@ -1,12 +1,8 @@
 package team.model;
-
 import base.IdentifiedObject;
-import java.awt.Color;
-
 public class Circle extends IdentifiedObject{
     private Point center;
     private double r;
-    private Color color = Color.BLACK;
 
     public Circle(int id, Point center, double r) {
         super(id);
@@ -16,11 +12,6 @@ public class Circle extends IdentifiedObject{
 
     public Point getCenter() { return center; }
     public double getR() { return r; }
-    public Color getColor() { return color; }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
 
     public void setR(double r) {
         if (r <= 0) throw new IllegalArgumentException("Radius must be > 0");
